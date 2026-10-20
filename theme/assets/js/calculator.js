@@ -68,7 +68,73 @@
 			renderIncludes(type);
 
 			last = { type: type, area: a, total: total };
+			syncToLead();
 		};
+
+		/* ---------- Связь с формой заявки (в обе стороны) ---------- */
+		var lead = document.querySelector('[data-lead-form]');
+		var leadType = lead && lead.querySelector('[data-lead-type]');
+		var leadArea = lead && lead.querySelector('[data-lead-area]');
+		var leadSummary = lead && lead.querySelector('[data-calc-summary]');
+		var leadAttached = lead && lead.querySelector('[data-calc-attached]');
+
+		var summaryText = function () {
+			return [
+				'Тариф «' + last.type.label + '»',
+				last.area + ' м²',
+				'стоимость ' + money(last.total) + (s.demo ? ' (демо-ставки)' : '')
+			].join('; ');
+		};
+
+		// Расчёт прикладывается к заявке, только если в форме выбран тариф калькулятора.
+		var updateAttached = function () {
+			if (!lead) { return; }
+			var linked = leadType && find(s.types, leadType.value).key === leadType.value;
+			leadSummary.value = linked ? summaryText() : '';
+			leadAttached.textContent = linked ? 'К заявке приложен расчёт: ' + summaryText() : '';
+			leadAttached.hidden = !linked;
+		};
+
+		// Калькулятор → форма: тариф и площадь подставляются сразу при любом изменении.
+		function syncToLead() {
+			if (!lead || !last) { return; }
+			if (leadType && leadType.querySelector('option[value="' + last.type.key + '"]')) {
+				leadType.value = last.type.key;
+			}
+			if (leadArea && document.activeElement !== leadArea) {
+				leadArea.value = last.area;
+			}
+			updateAttached();
+		}
+
+		// Форма → калькулятор: выбор тарифа или площади в форме пересчитывает калькулятор.
+		if (leadType) {
+			leadType.addEventListener('change', function () {
+				var radio = form.querySelector('input[name="calc_type"][value="' + leadType.value + '"]');
+				if (radio) {
+					radio.checked = true;
+					calc();
+				} else {
+					updateAttached(); // «Пока не знаю» — расчёт не прикладываем.
+				}
+			});
+		}
+		if (leadArea) {
+			leadArea.setAttribute('max', s.maxArea);
+			var fromLeadArea = function (final) {
+				var v = parseFloat(String(leadArea.value).replace(',', '.'));
+				if (!isFinite(v)) { return; }
+				area.value = range.value = clampArea(v);
+				if (final) { leadArea.value = area.value; }
+				calc();
+			};
+			leadArea.addEventListener('input', function () { fromLeadArea(false); });
+			leadArea.addEventListener('change', function () { fromLeadArea(true); });
+		}
+		if (lead) {
+			// После успешной отправки форма очищается — снова подставляем текущий расчёт.
+			lead.addEventListener('reset', function () { setTimeout(syncToLead, 0); });
+		}
 
 		// Ползунок и поле площади синхронизированы.
 		range.addEventListener('input', function () {
@@ -87,30 +153,12 @@
 		form.addEventListener('change', calc);
 		calc();
 
-		// «Передать в заявку»: заполняем форму и прокручиваем к ней.
+		// «Передать в заявку»: форма уже заполнена — подставляем ещё раз и прокручиваем к ней.
 		root.querySelector('[data-calc-send]').addEventListener('click', function (e) {
-			var lead = document.querySelector('[data-lead-form]');
 			if (!lead || !last) { return; }
 			e.preventDefault();
-			var summary = [
-				'Тариф «' + last.type.label + '»',
-				last.area + ' м²',
-				'стоимость ' + money(last.total) + (s.demo ? ' (демо-ставки)' : '')
-			].join('; ');
-
-			var typeSelect = lead.querySelector('[data-lead-type]');
-			if (typeSelect && typeSelect.querySelector('option[value="' + last.type.key + '"]')) {
-				typeSelect.value = last.type.key;
-			}
-			var areaInput = lead.querySelector('[data-lead-area]');
-			if (areaInput) { areaInput.value = last.area; }
-			var hidden = lead.querySelector('[data-calc-summary]');
-			if (hidden) { hidden.value = summary; }
-			var attached = lead.querySelector('[data-calc-attached]');
-			if (attached) {
-				attached.textContent = 'К заявке приложен расчёт: ' + summary;
-				attached.hidden = false;
-			}
+			if (leadArea) { leadArea.value = last.area; }
+			syncToLead();
 
 			lead.scrollIntoView({ behavior: 'smooth', block: 'start' });
 			var name = lead.querySelector('input[name="name"]');

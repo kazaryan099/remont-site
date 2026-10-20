@@ -70,7 +70,8 @@ function rmt_lead_field_messages() {
 		'name'        => __( 'Укажите имя: от 2 до 60 букв.', 'remont' ),
 		'phone'       => __( 'Проверьте номер телефона: нужно 10–15 цифр.', 'remont' ),
 		'repair_type' => __( 'Выберите тип ремонта.', 'remont' ),
-		'area'        => __( 'Площадь — число от 1 до 2000 м².', 'remont' ),
+		/* translators: %d: максимальная площадь из настроек калькулятора */
+		'area'        => sprintf( __( 'Площадь — число от 1 до %d м².', 'remont' ), rmt_calc_settings()['max_area'] ),
 		'comment'     => __( 'Комментарий слишком длинный (до 2000 символов).', 'remont' ),
 		'consent'     => __( 'Нужно согласие на обработку персональных данных.', 'remont' ),
 	);
@@ -160,7 +161,7 @@ function rmt_lead_handle( array $raw ) {
 	$area_raw = trim( str_replace( ',', '.', (string) ( $raw['area'] ?? '' ) ) );
 	$area     = '';
 	if ( '' !== $area_raw ) {
-		if ( ! is_numeric( $area_raw ) || (float) $area_raw < 1 || (float) $area_raw > 2000 ) {
+		if ( ! is_numeric( $area_raw ) || (float) $area_raw < 1 || (float) $area_raw > rmt_calc_settings()['max_area'] ) {
 			$errors['area'] = $texts['area'];
 		} else {
 			$area = (string) round( (float) $area_raw, 1 );

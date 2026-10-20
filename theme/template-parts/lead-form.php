@@ -100,7 +100,7 @@ $rmt_invalid = fn( $field ) => isset( $rmt_fields[ $field ] ) ? ' aria-invalid="
 				</div>
 				<div class="field">
 					<label for="lead-area"><?php esc_html_e( 'Площадь, м²', 'remont' ); ?></label>
-					<input class="input" type="number" id="lead-area" name="area" min="1" max="2000" step="0.1" inputmode="decimal" aria-describedby="lead-area-error" data-lead-area<?php echo $rmt_invalid( 'area' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+					<input class="input" type="number" id="lead-area" name="area" min="1" max="<?php echo esc_attr( rmt_calc_settings()['max_area'] ); ?>" step="0.1" inputmode="decimal" aria-describedby="lead-area-error" data-lead-area<?php echo $rmt_invalid( 'area' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 					<?php $rmt_error( 'area' ); ?>
 				</div>
 				<div class="field field--full">
