@@ -617,7 +617,10 @@ h3.display { font-size: var(--fs-h3); }
 
 .project-card { position: relative; display: flex; flex-direction: column; height: 100%; }
 .project-card__media { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--c-ink); }
+.project-card__img-link { display: block; width: 100%; height: 100%; }
 .project-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.project-card__media .badge { pointer-events: none; }
+.featured__tile a { display: block; }
 .project-card__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(var(--c-overlay), .65) 0%, rgba(var(--c-overlay), 0) 45%); pointer-events: none; }
 .project-card:hover .project-card__media img { transform: scale(1.04); }
 .project-card__name {

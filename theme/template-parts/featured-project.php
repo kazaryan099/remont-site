@@ -83,7 +83,9 @@ $rmt_tasks = array_slice( rmt_meta_lines( 'tasks', $rmt_project->ID ), 0, 6 );
 		<ul class="featured__grid" role="list">
 			<?php foreach ( $rmt_tiles as list( $rmt_id, $rmt_mod ) ) : ?>
 				<li class="featured__tile<?php echo $rmt_mod ? ' featured__tile--' . esc_attr( $rmt_mod ) : ''; ?>">
-					<?php echo wp_get_attachment_image( $rmt_id, $rmt_mod ? 'rmt-wide' : 'rmt-card', false, array( 'loading' => 'lazy', 'sizes' => $rmt_mod ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 1024px) 25vw, 50vw' ) ); ?>
+					<a href="<?php echo esc_url( get_permalink( $rmt_project ) ); ?>" tabindex="-1" aria-hidden="true">
+						<?php echo wp_get_attachment_image( $rmt_id, $rmt_mod ? 'rmt-wide' : 'rmt-card', false, array( 'loading' => 'lazy', 'sizes' => $rmt_mod ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 1024px) 25vw, 50vw' ) ); ?>
+					</a>
 				</li>
 			<?php endforeach; ?>
 		</ul>

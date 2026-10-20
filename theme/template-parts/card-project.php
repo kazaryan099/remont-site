@@ -16,7 +16,10 @@ $rmt_type    = rmt_project_type( $rmt_post->ID );
 ?>
 <article class="project-card">
 	<div class="project-card__media">
-		<?php echo rmt_post_image( $rmt_post, 'rmt-card', array( 'alt' => '', 'sizes' => '(min-width: 1024px) 30vw, 85vw' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php // Фото — дополнительная ссылка для мыши и пальца; для клавиатуры и скринридера ссылка одна — название. ?>
+		<a class="project-card__img-link" href="<?php echo esc_url( get_permalink( $rmt_post ) ); ?>" tabindex="-1" aria-hidden="true">
+			<?php echo rmt_post_image( $rmt_post, 'rmt-card', array( 'alt' => '', 'sizes' => '(min-width: 1024px) 30vw, 85vw' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		</a>
 		<?php if ( rmt_meta( 'is_demo', $rmt_post->ID ) ) : ?>
 			<span class="badge"><?php esc_html_e( 'Демо', 'remont' ); ?></span>
 		<?php elseif ( rmt_meta( 'is_render', $rmt_post->ID ) ) : ?>
