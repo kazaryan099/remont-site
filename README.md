@@ -8,7 +8,7 @@
 
 | Путь | Назначение |
 |---|---|
-| `compose.yaml` | WordPress 6.8 (PHP 8.3, Apache) + MariaDB 11.4 + служебный WP-CLI |
+| `compose.yaml` | WordPress 7.1 (PHP 8.3, Apache) + MariaDB 11.4 + служебный WP-CLI |
 | `.env.example` | Шаблон настроек; рабочий `.env` в репозиторий не попадает |
 | `theme/` | Тема WordPress (подключена в контейнер, правки видны сразу) |
 | `seed/` | Скрипты наполнения сайта: `seed.php` (услуги, FAQ, страницы, меню) |
@@ -42,6 +42,18 @@ docker compose stop      # остановить (данные сохраняют
 docker compose start     # запустить снова
 docker compose logs -f wordpress   # журнал веб-сервера
 ```
+
+## Обновление WordPress
+
+Версия закреплена в `compose.yaml` (`image: wordpress:7.1-php8.3-apache`). PHP 8.3 выбран, потому что он
+есть на хостинге Beget. Порядок обновления:
+
+1. Резервная копия базы и файлов в `backups/` (папка не попадает в Git).
+2. Поменять тег образа в `compose.yaml` и выполнить `docker compose up -d wordpress`.
+3. Обновить ядро и базу: `docker compose run --rm wpcli wp core update --version=X.Y.Z`,
+   затем `wp core update-db` и `wp core verify-checksums`.
+
+Ядро в томе `wp_data` при смене образа само не обновляется, поэтому шаг 3 обязателен.
 
 ## Сброс (удаляет данные!)
 
