@@ -1,0 +1,13 @@
+/*
+Theme Name: Remont
+Theme URI: http://localhost:8080
+Description: Кастомная тема для сайта компании по ремонту квартир под ключ. Услуги, портфолио, калькулятор стоимости, приём заявок.
+Version: 1.0.0
+Requires at least: 6.4
+Requires PHP: 8.1
+Author: Remont team
+Text Domain: remont
+License: GPL-2.0-or-later
+*/
+
+/* Стили подключаются из assets/css/main.css (см. inc/assets.php). */

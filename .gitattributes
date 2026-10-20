@@ -1,0 +1,6 @@
+# Переводы строк: исходники в формате LF (их читают контейнеры Linux), скрипты PowerShell — CRLF.
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.jpg binary
+*.png binary
+*.woff2 binary

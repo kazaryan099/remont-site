@@ -1,0 +1,27 @@
+# Проект «Синергия» — фото объекта
+
+Источник: архив заказчика на Яндекс.Диске (папка «M2 Синергия»). Обработка: поворот по EXIF, уменьшение до 2560 px по длинной стороне, метаданные удалены.
+
+- sinergiya-kuhnya-stolovaya.jpg ← AX8A7463-HDR.jpg (6701×4467 → 2560×1707, 415 КБ)
+- sinergiya-gostinaya.jpg ← AX8A7548.jpg (6720×4480 → 2560×1707, 437 КБ)
+- sinergiya-gostinaya-stellazh.jpg ← AX8A7582-HDR.jpg (4458×6687 → 1707×2560, 430 КБ)
+- sinergiya-kamin.jpg ← AX8A7451-HDR.jpg (4467×6700 → 1707×2560, 565 КБ)
+- sinergiya-kuhnya.jpg ← AX8A7487-HDR.jpg (4466×6699 → 1707×2560, 399 КБ)
+- sinergiya-stolovaya.jpg ← AX8A7484-HDR.jpg (4466×6699 → 1707×2560, 454 КБ)
+- sinergiya-stoleshnica.jpg ← AX8A7517.jpg (3417×5125 → 1707×2560, 559 КБ)
+- sinergiya-kuhnya-moyka.jpg ← AX8A7597.jpg (4480×6720 → 1707×2560, 223 КБ)
+- sinergiya-prihozhaya.jpg ← AX8A7637.jpg (4480×6720 → 1707×2560, 382 КБ)
+- sinergiya-koridor.jpg ← AX8A7766-HDR.jpg (4466×6699 → 1707×2560, 266 КБ)
+- sinergiya-garderob.jpg ← AX8A7660.jpg (4480×6720 → 1707×2560, 329 КБ)
+- sinergiya-sanuzel-gostevoy.jpg ← AX8A7656.jpg (4480×6720 → 1707×2560, 228 КБ)
+- sinergiya-spalnya-krovat.jpg ← AX8A7805.jpg (4480×6720 → 1707×2560, 403 КБ)
+- sinergiya-spalnya-komod.jpg ← AX8A7798.jpg (4480×6720 → 1707×2560, 292 КБ)
+- sinergiya-vannaya.jpg ← AX8A7748-HDR.jpg (4465×6697 → 1707×2560, 308 КБ)
+- sinergiya-vannaya-okno.jpg ← AX8A7742-HDR.jpg (4465×6698 → 1707×2560, 332 КБ)
+- sinergiya-vannaya-tumba.jpg ← AX8A7809-HDR.jpg (4467×6700 → 1707×2560, 439 КБ)
+- sinergiya-vannaya-zerkalo.jpg ← AX8A7827-HDR.jpg (4465×6698 → 1707×2560, 533 КБ)
+- sinergiya-gostevaya-spalnya.jpg ← AX8A7848-HDR.jpg (6698×4465 → 2560×1707, 300 КБ)
+- sinergiya-detskaya.jpg ← AX8A7863-HDR.jpg (6701×4467 → 2560×1707, 549 КБ)
+- sinergiya-dush.jpg ← IMG_1562.JPG (4480×6720 → 1707×2560, 442 КБ)
+- sinergiya-sanuzel.jpg ← AX8A7874.jpg (4480×6720 → 1707×2560, 427 КБ)
+- sinergiya-sanuzel-panel.jpg ← AX8A7824-HDR.jpg (4465×6697 → 1707×2560, 339 КБ)
