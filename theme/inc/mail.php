@@ -5,6 +5,7 @@
  *   RMT_SMTP_USER, RMT_SMTP_PASS (если сервер требует авторизацию), RMT_SMTP_FROM.
  * Локально в Docker письма уходят в Mailpit (http://localhost:8025), на Beget — через smtp.beget.com.
  * Без RMT_SMTP_HOST WordPress отправляет письма стандартной функцией PHP mail().
+ * Имя отправителя — «DOMO-remont»; другое можно задать константой RMT_SMTP_FROM_NAME.
  *
  * @package Remont
  */
@@ -29,14 +30,14 @@ function rmt_smtp_setup( $mailer ) {
 	$mailer->CharSet = 'UTF-8';
 }
 
-/** Отправитель: ящик домена, имя — название сайта. */
+/** Отправитель: ящик домена, имя — «DOMO-remont» (можно переопределить константой RMT_SMTP_FROM_NAME). */
 add_filter(
 	'wp_mail_from',
 	function ( $from ) {
 		return defined( 'RMT_SMTP_FROM' ) && is_email( RMT_SMTP_FROM ) ? RMT_SMTP_FROM : $from;
 	}
 );
-add_filter( 'wp_mail_from_name', fn() => get_bloginfo( 'name' ) );
+add_filter( 'wp_mail_from_name', fn() => defined( 'RMT_SMTP_FROM_NAME' ) && RMT_SMTP_FROM_NAME ? RMT_SMTP_FROM_NAME : 'DOMO-remont' );
 
 /** Ошибки отправки — в журнал PHP (без текста письма, чтобы не писать персональные данные). */
 add_action(
