@@ -15,10 +15,10 @@ function rmt_defaults() {
 	return array(
 		// Контакты.
 		'phone'            => '+7 (000) 000-00-00',
-		'email'            => 'info@example.com',
+		'email'            => '',
 		'region'           => 'Город и область — укажите регион работы',
 		'address'          => '',
-		'schedule'         => 'Пн–Пт 9:00–19:00, Сб 10:00–16:00',
+		'schedule'         => 'Пн–Пт 9:00–19:00, Сб–Вс 10:00–16:00',
 		'telegram'         => '',
 		'whatsapp'         => '',
 		'legal'            => 'ООО «Название компании» · ИНН 0000000000',

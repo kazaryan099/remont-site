@@ -17,7 +17,7 @@
 | `seed/images/<проект>/` | Фото по проектам, без метаданных; источники — в `SOURCES.md` каждой папки |
 | `scripts/setup.ps1` | Первый запуск: контейнеры, установка WordPress, тема, демо-контент |
 | `scripts/reset.ps1` | Полный сброс локального сайта (с подтверждением) |
-| `brand/DOMO-original.png` | Исходный файл логотипа; версия для сайта — `theme/assets/img/logo-domo.png` (прозрачный фон, графит #171815) и светлая `logo-domo-light.png` |
+| `brand/DOMO-original.png` | Исходный файл логотипа; версия для сайта — `theme/assets/img/logo-domo.png` (прозрачный фон, графит #171815) и светлая `logo-domo-light.png`. Значок сайта (favicon) — `brand/favicon-512.png`, `brand/favicon.ico`, в теме `site-icon.png` |
 | `docs/design-spec.md` | Спецификация дизайна по исследованию референса |
 
 ## Запуск (Windows + Docker Desktop)
