@@ -21,7 +21,7 @@ function rmt_defaults() {
 		'schedule'         => 'Пн–Пт 9:00–19:00, Сб–Вс 10:00–16:00',
 		'telegram'         => '',
 		'whatsapp'         => '',
-		'legal'            => 'ООО «Название компании» · ИНН 0000000000',
+		'legal'            => '',
 		'schema_confirmed' => false,
 
 		// Герой.

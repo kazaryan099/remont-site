@@ -90,7 +90,8 @@ $rmt_privacy  = get_privacy_policy_url();
 		</div>
 
 		<div class="site-footer__bottom">
-			<p>© <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php echo esc_html( rmt_opt( 'legal' ) ); ?></p>
+			<?php // Юрлицо и ИНН показываются, только когда заданы в настройщике; иначе — название сайта. ?>
+			<p>© <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php echo esc_html( rmt_opt( 'legal' ) ?: get_bloginfo( 'name' ) ); ?></p>
 			<?php if ( $rmt_privacy ) : ?>
 				<a href="<?php echo esc_url( $rmt_privacy ); ?>"><?php esc_html_e( 'Политика конфиденциальности', 'remont' ); ?></a>
 			<?php endif; ?>
