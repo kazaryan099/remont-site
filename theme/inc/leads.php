@@ -217,28 +217,83 @@ function rmt_lead_handle( array $raw ) {
 	);
 }
 
-/** Письмо администратору — только если адрес задан в настройках. Заявка уже сохранена. */
+/* ---------- Копии заявок на почту: настройка и отправка ---------- */
+
+// Поле адресов — на общей странице «Настройки → Калькулятор и заявки» (группа rmt_calc_group).
+add_action( 'admin_init', 'rmt_lead_register_settings' );
+function rmt_lead_register_settings() {
+	register_setting(
+		'rmt_calc_group',
+		'rmt_lead_notify_email',
+		array(
+			'type'              => 'string',
+			'sanitize_callback' => 'rmt_sanitize_notify_emails',
+			'default'           => '',
+		)
+	);
+}
+
+add_action( 'rmt_settings_page_sections', 'rmt_lead_settings_section' );
+function rmt_lead_settings_section() {
+	?>
+	<h2><?php esc_html_e( 'Уведомления о заявках', 'remont' ); ?></h2>
+	<table class="form-table" role="presentation">
+		<tr>
+			<th scope="row"><label for="rmt-notify"><?php esc_html_e( 'Email для копий заявок', 'remont' ); ?></label></th>
+			<td>
+				<input id="rmt-notify" type="text" class="large-text" name="rmt_lead_notify_email" value="<?php echo esc_attr( get_option( 'rmt_lead_notify_email', '' ) ); ?>">
+				<p class="description"><?php esc_html_e( 'Один или несколько адресов через запятую. Заявки в любом случае сохраняются в разделе «Заявки», письмо — копия. Отправка идёт через SMTP, настроенный в wp-config.php (константы RMT_SMTP_*).', 'remont' ); ?></p>
+			</td>
+		</tr>
+	</table>
+	<?php
+}
+
+/** Адреса для уведомлений из настроек: список через запятую, только корректные email. */
+function rmt_lead_notify_emails() {
+	$raw = preg_split( '/[\s,;]+/', (string) get_option( 'rmt_lead_notify_email', '' ), -1, PREG_SPLIT_NO_EMPTY );
+	return array_values( array_unique( array_filter( array_map( 'sanitize_email', $raw ), 'is_email' ) ) );
+}
+
+/** Очистка поля настроек: оставляем корректные адреса через запятую. */
+function rmt_sanitize_notify_emails( $value ) {
+	$list = preg_split( '/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY );
+	return implode( ', ', array_unique( array_filter( array_map( 'sanitize_email', $list ), 'is_email' ) ) );
+}
+
+/**
+ * Копия заявки на почту — если адреса заданы в настройках. Заявка к этому моменту уже сохранена,
+ * поэтому сбой почты на неё не влияет; результат отправки записывается в заявку.
+ */
 function rmt_lead_notify( $post_id ) {
-	$to = get_option( 'rmt_lead_notify_email', '' );
-	if ( ! is_email( $to ) ) {
+	$to = rmt_lead_notify_emails();
+	if ( ! $to ) {
 		return;
 	}
 	$types = rmt_repair_type_options();
 	$type  = get_post_meta( $post_id, '_rmt_lead_type', true );
+	$name  = get_post_meta( $post_id, '_rmt_lead_name', true );
+	$phone = get_post_meta( $post_id, '_rmt_lead_phone', true );
+	$area  = get_post_meta( $post_id, '_rmt_lead_area', true );
+	$val   = fn( $v ) => '' !== (string) $v ? $v : '—';
 	$body  = implode(
 		"\n",
 		array(
-			'Имя: ' . get_post_meta( $post_id, '_rmt_lead_name', true ),
-			'Телефон: ' . get_post_meta( $post_id, '_rmt_lead_phone', true ),
-			'Тип ремонта: ' . ( $types[ $type ] ?? $type ),
-			'Площадь: ' . get_post_meta( $post_id, '_rmt_lead_area', true ),
-			'Комментарий: ' . get_post_meta( $post_id, '_rmt_lead_comment', true ),
-			'Расчёт: ' . get_post_meta( $post_id, '_rmt_lead_calc', true ),
+			'Новая заявка с сайта ' . get_bloginfo( 'name' ) . ' — ' . wp_date( 'j F Y, H:i' ),
 			'',
-			admin_url( 'post.php?post=' . $post_id . '&action=edit' ),
+			'Имя: ' . $name,
+			'Телефон: ' . $phone,
+			'Тип ремонта: ' . $val( $types[ $type ] ?? $type ),
+			'Площадь: ' . $val( $area ? $area . ' м²' : '' ),
+			'Комментарий: ' . $val( get_post_meta( $post_id, '_rmt_lead_comment', true ) ),
+			'Расчёт из калькулятора: ' . $val( get_post_meta( $post_id, '_rmt_lead_calc', true ) ),
+			'Страница: ' . $val( get_post_meta( $post_id, '_rmt_lead_source', true ) ),
+			'',
+			'Заявка в админке: ' . admin_url( 'post.php?post=' . $post_id . '&action=edit' ),
 		)
 	);
-	wp_mail( $to, 'Новая заявка с сайта', $body );
+	$sent = wp_mail( $to, sprintf( 'Заявка с сайта: %s, %s', $name, $phone ), $body );
+	update_post_meta( $post_id, '_rmt_lead_mailed', $sent ? 'sent' : 'failed' );
 }
 
 /* ---------- Админка ---------- */
@@ -299,6 +354,7 @@ function rmt_lead_render_details( $post ) {
 		__( 'Комментарий', 'remont' )        => get_post_meta( $post->ID, '_rmt_lead_comment', true ),
 		__( 'Из калькулятора', 'remont' )    => get_post_meta( $post->ID, '_rmt_lead_calc', true ),
 		__( 'Страница', 'remont' )           => get_post_meta( $post->ID, '_rmt_lead_source', true ),
+		__( 'Копия на почту', 'remont' )     => array( 'sent' => __( 'отправлена', 'remont' ), 'failed' => __( 'не отправлена — проверьте настройки почты', 'remont' ) )[ get_post_meta( $post->ID, '_rmt_lead_mailed', true ) ] ?? '',
 	);
 	$status = get_post_meta( $post->ID, '_rmt_lead_status', true ) ?: 'new';
 

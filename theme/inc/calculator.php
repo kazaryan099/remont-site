@@ -94,15 +94,6 @@ function rmt_calc_register_settings() {
 			'default'           => rmt_calc_defaults(),
 		)
 	);
-	register_setting(
-		'rmt_calc_group',
-		'rmt_lead_notify_email',
-		array(
-			'type'              => 'string',
-			'sanitize_callback' => 'sanitize_email',
-			'default'           => '',
-		)
-	);
 }
 
 function rmt_calc_sanitize( $input ) {
@@ -187,18 +178,11 @@ function rmt_calc_render_page() {
 				</tr>
 			</table>
 
-			<h2><?php esc_html_e( 'Уведомления о заявках', 'remont' ); ?></h2>
-			<table class="form-table" role="presentation">
-				<tr>
-					<th scope="row"><label for="rmt-notify"><?php esc_html_e( 'Email для уведомлений', 'remont' ); ?></label></th>
-					<td>
-						<input id="rmt-notify" type="email" class="regular-text" name="rmt_lead_notify_email" value="<?php echo esc_attr( get_option( 'rmt_lead_notify_email', '' ) ); ?>">
-						<p class="description"><?php esc_html_e( 'Необязательно. Заявки в любом случае сохраняются в разделе «Заявки». Для отправки писем на сервере должна быть настроена почта.', 'remont' ); ?></p>
-					</td>
-				</tr>
-			</table>
-
-			<?php submit_button(); ?>
+			<?php
+			// Другие модули добавляют сюда свои разделы (настройки почты для заявок — в leads.php).
+			do_action( 'rmt_settings_page_sections' );
+			submit_button();
+			?>
 		</form>
 	</div>
 	<?php
