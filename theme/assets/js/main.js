@@ -239,7 +239,8 @@
 		};
 
 		form.addEventListener('submit', function (e) {
-			if (!window.fetch || !window.FormData || !data.ajaxUrl) {
+			var endpoint = data.leadUrl || data.ajaxUrl;
+			if (!window.fetch || !window.FormData || !endpoint) {
 				return; // Обычная отправка формы.
 			}
 			e.preventDefault();
@@ -258,11 +259,11 @@
 			submit.textContent = data.i18n.sending || '…';
 			setStatus('', false);
 
-			fetch(data.ajaxUrl, {
+			fetch(endpoint, {
 				method: 'POST',
 				body: new FormData(form),
 				credentials: 'same-origin',
-				headers: { 'Accept': 'application/json' }
+				headers: data.leadUrl && data.restNonce ? { 'Accept': 'application/json', 'X-WP-Nonce': data.restNonce } : { 'Accept': 'application/json' }
 			})
 				.then(function (res) {
 					return res.json().catch(function () { return { success: false, data: {} }; });

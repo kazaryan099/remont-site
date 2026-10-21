@@ -14,10 +14,42 @@ const RMT_LEAD_MIN_SECONDS = 3;   // Быстрее человек форму н
 const RMT_LEAD_RATE_LIMIT  = 5;   // Не больше 5 заявок…
 const RMT_LEAD_RATE_WINDOW = 900; // …за 15 минут с одного адреса.
 
+// Основной путь для JS — REST API (/wp-json/remont/v1/lead). На Beget защита хостинга отклоняет
+// POST к admin-ajax.php с Referer сайта (403), поэтому admin-ajax оставлен только как запасной.
+add_action( 'rest_api_init', 'rmt_lead_register_rest' );
 add_action( 'wp_ajax_rmt_lead', 'rmt_lead_ajax' );
 add_action( 'wp_ajax_nopriv_rmt_lead', 'rmt_lead_ajax' );
 add_action( 'admin_post_rmt_lead', 'rmt_lead_post' );
 add_action( 'admin_post_nopriv_rmt_lead', 'rmt_lead_post' );
+
+function rmt_lead_register_rest() {
+	register_rest_route(
+		'remont/v1',
+		'/lead',
+		array(
+			'methods'             => 'POST',
+			'callback'            => 'rmt_lead_rest',
+			// Форма публичная: защита — собственный nonce, ловушка, метка времени и лимит в rmt_lead_handle().
+			'permission_callback' => '__return_true',
+		)
+	);
+}
+
+/** Ответ в том же формате, что и у wp_send_json_*: { success, data: { message, errors } }. */
+function rmt_lead_rest( WP_REST_Request $request ) {
+	// Параметры REST приходят без «магических» слешей, а rmt_lead_handle() их снимает — добавляем.
+	$result = rmt_lead_handle( wp_slash( $request->get_body_params() ) );
+	return new WP_REST_Response(
+		array(
+			'success' => $result['ok'],
+			'data'    => array(
+				'message' => $result['message'],
+				'errors'  => (object) $result['errors'],
+			),
+		),
+		$result['status']
+	);
+}
 
 function rmt_lead_ajax() {
 	$result = rmt_lead_handle( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce проверяется в rmt_lead_handle().

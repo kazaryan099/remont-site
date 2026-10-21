@@ -22,7 +22,9 @@ function rmt_enqueue_assets() {
 		'rmt-main',
 		'rmtData',
 		array(
-			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+			'leadUrl'   => rest_url( 'remont/v1/lead' ),
+			'restNonce' => wp_create_nonce( 'wp_rest' ),
 			'i18n'    => array(
 				'sending' => __( 'Отправляем…', 'remont' ),
 				'error'   => __( 'Не удалось отправить заявку. Проверьте соединение или позвоните нам.', 'remont' ),
