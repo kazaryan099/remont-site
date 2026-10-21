@@ -377,6 +377,18 @@ update_option( 'blogname', 'DOMO' );
 
 // Контакты компании.
 set_theme_mod( 'phone', '+7 (906) 047-24-67' );
+
+// Логотип DOMO (файл темы → медиатека → «Свойства сайта → Логотип»).
+if ( ! get_theme_mod( 'custom_logo' ) ) {
+	$logo_src = get_template_directory() . '/assets/img/logo-domo.png';
+	$logo_tmp = wp_tempnam( 'logo-domo.png' );
+	copy( $logo_src, $logo_tmp );
+	$logo_id = media_handle_sideload( array( 'name' => 'logo-domo.png', 'tmp_name' => $logo_tmp ), 0, 'DOMO' );
+	if ( ! is_wp_error( $logo_id ) ) {
+		update_post_meta( $logo_id, '_wp_attachment_image_alt', 'DOMO' );
+		set_theme_mod( 'custom_logo', $logo_id );
+	}
+}
 update_option( 'blogdescription', 'Ремонт квартир под ключ' );
 update_option( 'timezone_string', 'Europe/Moscow' );
 update_option( 'date_format', 'j F Y' );

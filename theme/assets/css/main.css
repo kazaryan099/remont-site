@@ -338,7 +338,8 @@ h3.display { font-size: var(--fs-h3); }
 .logo:hover { color: var(--c-graphite-hover); }
 .logo__mark { width: 30px; height: 30px; }
 .logo__text { font-family: var(--f-display); font-size: 1.125rem; letter-spacing: .28em; text-transform: uppercase; }
-.logo__img { max-height: 44px; width: auto; }
+.logo__img { display: block; height: 38px; width: auto; max-width: 100%; }
+@media (max-width: 559px) { .logo__img { height: 30px; } }
 
 .main-nav { margin-left: auto; }
 .main-nav .menu { display: flex; align-items: center; gap: 4px; margin: 0; padding: 0; list-style: none; }
