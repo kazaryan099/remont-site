@@ -79,12 +79,12 @@ $rmt_invalid = fn( $field ) => isset( $rmt_fields[ $field ] ) ? ' aria-invalid="
 			<div class="form-grid">
 				<div class="field">
 					<label for="lead-name"><?php esc_html_e( 'Имя', 'remont' ); ?> <span class="req" aria-hidden="true">*</span></label>
-					<input class="input" type="text" id="lead-name" name="name" required minlength="2" maxlength="60" autocomplete="name" aria-describedby="lead-name-error"<?php echo $rmt_invalid( 'name' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+					<input class="input ym-disable-keys ym-hide-content" type="text" id="lead-name" name="name" required minlength="2" maxlength="60" autocomplete="name" aria-describedby="lead-name-error"<?php echo $rmt_invalid( 'name' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 					<?php $rmt_error( 'name' ); ?>
 				</div>
 				<div class="field">
 					<label for="lead-phone"><?php esc_html_e( 'Телефон', 'remont' ); ?> <span class="req" aria-hidden="true">*</span></label>
-					<input class="input" type="tel" id="lead-phone" name="phone" required inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" aria-describedby="lead-phone-error"<?php echo $rmt_invalid( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+					<input class="input ym-disable-keys ym-hide-content" type="tel" id="lead-phone" name="phone" required inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" aria-describedby="lead-phone-error"<?php echo $rmt_invalid( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 					<?php $rmt_error( 'phone' ); ?>
 				</div>
 				<div class="field">
@@ -99,12 +99,12 @@ $rmt_invalid = fn( $field ) => isset( $rmt_fields[ $field ] ) ? ' aria-invalid="
 				</div>
 				<div class="field">
 					<label for="lead-area"><?php esc_html_e( 'Площадь, м²', 'remont' ); ?></label>
-					<input class="input" type="number" id="lead-area" name="area" min="1" max="<?php echo esc_attr( rmt_calc_settings()['max_area'] ); ?>" step="0.1" inputmode="decimal" aria-describedby="lead-area-error" data-lead-area<?php echo $rmt_invalid( 'area' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+					<input class="input ym-disable-keys ym-hide-content" type="number" id="lead-area" name="area" min="1" max="<?php echo esc_attr( rmt_calc_settings()['max_area'] ); ?>" step="0.1" inputmode="decimal" aria-describedby="lead-area-error" data-lead-area<?php echo $rmt_invalid( 'area' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 					<?php $rmt_error( 'area' ); ?>
 				</div>
 				<div class="field field--full">
 					<label for="lead-comment"><?php esc_html_e( 'Комментарий', 'remont' ); ?></label>
-					<textarea class="input" id="lead-comment" name="comment" rows="3" maxlength="2000" placeholder="<?php esc_attr_e( 'Что нужно сделать, когда удобно созвониться', 'remont' ); ?>" aria-describedby="lead-comment-error" data-lead-comment<?php echo $rmt_invalid( 'comment' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></textarea>
+					<textarea class="input ym-disable-keys ym-hide-content" id="lead-comment" name="comment" rows="3" maxlength="2000" placeholder="<?php esc_attr_e( 'Что нужно сделать, когда удобно созвониться', 'remont' ); ?>" aria-describedby="lead-comment-error" data-lead-comment<?php echo $rmt_invalid( 'comment' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>></textarea>
 					<?php $rmt_error( 'comment' ); ?>
 				</div>
 			</div>

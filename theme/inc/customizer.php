@@ -23,6 +23,7 @@ function rmt_defaults() {
 		'whatsapp'         => '',
 		'legal'            => '',
 		'schema_confirmed' => false,
+		'metrika_id'       => '113714464',
 
 		// Герой.
 		'hero_kicker'      => 'Ремонт квартир под ключ',
@@ -116,6 +117,12 @@ function rmt_customize_register( WP_Customize_Manager $wp_customize ) {
 				'whatsapp'         => array( 'url', __( 'Ссылка на WhatsApp', 'remont' ) ),
 				'legal'            => array( 'text', __( 'Юридическое лицо и ИНН (подвал)', 'remont' ) ),
 				'schema_confirmed' => array( 'checkbox', __( 'Контакты проверены — выводить их в микроразметку для поисковиков', 'remont' ) ),
+			),
+		),
+		'rmt_analytics' => array(
+			'title'  => __( 'Аналитика', 'remont' ),
+			'fields' => array(
+				'metrika_id' => array( 'text', __( 'Номер счётчика Яндекс Метрики (пусто — счётчик выключен). Работает только на боевом сайте.', 'remont' ) ),
 			),
 		),
 		'rmt_hero'     => array(
