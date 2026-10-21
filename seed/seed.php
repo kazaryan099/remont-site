@@ -374,6 +374,9 @@ $make_menu(
 
 
 update_option( 'blogname', 'DOMO' );
+
+// Контакты компании.
+set_theme_mod( 'phone', '+7 (906) 047-24-67' );
 update_option( 'blogdescription', 'Ремонт квартир под ключ' );
 update_option( 'timezone_string', 'Europe/Moscow' );
 update_option( 'date_format', 'j F Y' );
