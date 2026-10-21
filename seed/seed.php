@@ -373,7 +373,7 @@ $make_menu(
 /* ---------- Настройки темы и сайта ---------- */
 
 
-update_option( 'blogname', 'Пространство' );
+update_option( 'blogname', 'DOMO' );
 update_option( 'blogdescription', 'Ремонт квартир под ключ' );
 update_option( 'timezone_string', 'Europe/Moscow' );
 update_option( 'date_format', 'j F Y' );
