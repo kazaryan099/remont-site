@@ -399,7 +399,7 @@ if ( ! get_option( 'site_icon' ) ) {
 		update_option( 'site_icon', $icon_id );
 	}
 }
-update_option( 'blogdescription', 'Ремонт квартир под ключ' );
+update_option( 'blogdescription', 'Ремонт квартир и домов' );
 update_option( 'timezone_string', 'Europe/Moscow' );
 update_option( 'date_format', 'j F Y' );
 update_option( 'default_comment_status', 'closed' );
