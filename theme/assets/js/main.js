@@ -261,7 +261,8 @@
 
 			fetch(endpoint, {
 				method: 'POST',
-				body: new FormData(form),
+				// Обычный формат (urlencoded), а не multipart: защита хостинга Beget режет multipart-POST (403).
+				body: new URLSearchParams(new FormData(form)),
 				credentials: 'same-origin',
 				headers: data.leadUrl && data.restNonce ? { 'Accept': 'application/json', 'X-WP-Nonce': data.restNonce } : { 'Accept': 'application/json' }
 			})

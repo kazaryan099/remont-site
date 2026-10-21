@@ -214,8 +214,9 @@ function rmt_lead_handle( array $raw ) {
 
 	// 6. Сохранение. Ошибка сохранения = ошибка для пользователя.
 	$phone   = '+' . $phone_digits;
+	// wp_insert_post() и запись полей снимают обратные слеши — данные передаются экранированными.
 	$post_id = wp_insert_post(
-		array(
+		wp_slash( array(
 			'post_type'   => 'rmt_lead',
 			'post_status' => 'publish',
 			'post_title'  => sprintf( '%s · %s', $name, $phone ),
@@ -229,7 +230,7 @@ function rmt_lead_handle( array $raw ) {
 				'_rmt_lead_source'   => $source,
 				'_rmt_lead_status'   => 'new',
 			),
-		),
+		) ),
 		true
 	);
 
