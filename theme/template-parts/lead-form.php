@@ -12,7 +12,6 @@ defined( 'ABSPATH' ) || exit;
 $rmt_types   = rmt_repair_type_options();
 $rmt_preset  = $args['type'] ?? '';
 $rmt_steps   = array_filter( array_map( 'trim', explode( "\n", (string) rmt_opt( 'form_steps' ) ) ) );
-$rmt_privacy = get_privacy_policy_url();
 
 // Результат отправки без JavaScript (после редиректа): только коды из URL, тексты — из темы.
 $rmt_code     = isset( $_GET['lead'] ) ? sanitize_key( wp_unslash( $_GET['lead'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -111,17 +110,6 @@ $rmt_invalid = fn( $field ) => isset( $rmt_fields[ $field ] ) ? ' aria-invalid="
 			</div>
 
 			<p class="calc-attached" hidden data-calc-attached></p>
-
-			<div class="field field--check">
-				<input type="checkbox" id="lead-consent" name="consent" value="1" required aria-describedby="lead-consent-error"<?php echo $rmt_invalid( 'consent' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-				<label for="lead-consent">
-					<?php esc_html_e( 'Согласен на обработку персональных данных', 'remont' ); ?>
-					<?php if ( $rmt_privacy ) : ?>
-						<?php esc_html_e( 'в соответствии с', 'remont' ); ?> <a href="<?php echo esc_url( $rmt_privacy ); ?>" target="_blank"><?php esc_html_e( 'политикой конфиденциальности', 'remont' ); ?></a>
-					<?php endif; ?>
-				</label>
-				<?php $rmt_error( 'consent' ); ?>
-			</div>
 
 			<button class="btn btn--block btn--lg" type="submit" data-submit><?php esc_html_e( 'Отправить заявку', 'remont' ); ?></button>
 			<p class="lead-form__note"><?php esc_html_e( 'Данные используются только для связи с вами по заявке и не передаются третьим лицам.', 'remont' ); ?></p>

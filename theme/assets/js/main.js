@@ -235,7 +235,6 @@
 			if (name.length < 2) { errors.name = 'Укажите имя: от 2 до 60 букв.'; }
 			if (digits.length < 10 || digits.length > 15) { errors.phone = 'Проверьте номер телефона: нужно 10–15 цифр.'; }
 			if (!form.elements.repair_type.value) { errors.repair_type = 'Выберите тип ремонта.'; }
-			if (!form.elements.consent.checked) { errors.consent = 'Нужно согласие на обработку персональных данных.'; }
 			return errors;
 		};
 

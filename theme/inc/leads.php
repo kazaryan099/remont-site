@@ -73,7 +73,6 @@ function rmt_lead_field_messages() {
 		/* translators: %d: максимальная площадь из настроек калькулятора */
 		'area'        => sprintf( __( 'Площадь — число от 1 до %d м².', 'remont' ), rmt_calc_settings()['max_area'] ),
 		'comment'     => __( 'Комментарий слишком длинный (до 2000 символов).', 'remont' ),
-		'consent'     => __( 'Нужно согласие на обработку персональных данных.', 'remont' ),
 	);
 }
 
@@ -173,9 +172,6 @@ function rmt_lead_handle( array $raw ) {
 		$errors['comment'] = $texts['comment'];
 	}
 
-	if ( empty( $raw['consent'] ) || '1' !== (string) $raw['consent'] ) {
-		$errors['consent'] = $texts['consent'];
-	}
 
 	if ( $errors ) {
 		return $fail( 'invalid', 422, $errors );
@@ -199,7 +195,6 @@ function rmt_lead_handle( array $raw ) {
 				'_rmt_lead_comment'  => $comment,
 				'_rmt_lead_calc'     => $calc,
 				'_rmt_lead_source'   => $source,
-				'_rmt_lead_consent'  => current_time( 'mysql' ),
 				'_rmt_lead_status'   => 'new',
 			),
 		),
@@ -304,7 +299,6 @@ function rmt_lead_render_details( $post ) {
 		__( 'Комментарий', 'remont' )        => get_post_meta( $post->ID, '_rmt_lead_comment', true ),
 		__( 'Из калькулятора', 'remont' )    => get_post_meta( $post->ID, '_rmt_lead_calc', true ),
 		__( 'Страница', 'remont' )           => get_post_meta( $post->ID, '_rmt_lead_source', true ),
-		__( 'Согласие на обработку ПДн', 'remont' ) => get_post_meta( $post->ID, '_rmt_lead_consent', true ),
 	);
 	$status = get_post_meta( $post->ID, '_rmt_lead_status', true ) ?: 'new';
 
