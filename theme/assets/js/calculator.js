@@ -79,11 +79,9 @@
 		var leadAttached = lead && lead.querySelector('[data-calc-attached]');
 
 		var summaryText = function () {
-			return [
-				'Тариф «' + last.type.label + '»',
-				last.area + ' м²',
-				'стоимость ' + money(last.total) + (s.demo ? ' (демо-ставки)' : '')
-			].join('; ');
+			// Вся формула целиком, чтобы было видно, откуда сумма: площадь × цена за м² = итог.
+			return 'Тариф «' + last.type.label + '»: ' + last.area + ' м² × ' + money(last.type.rate) + '/м² = ' +
+				money(last.total) + (s.demo ? ' (демо-ставки)' : '');
 		};
 
 		// Расчёт прикладывается к заявке, только если в форме выбран тариф калькулятора.
