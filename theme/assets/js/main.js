@@ -156,6 +156,7 @@
 		var slides = hero.querySelectorAll('[data-hero-slide]');
 		var dots = hero.querySelectorAll('[data-hero-dot]');
 		var pauseBtn = hero.querySelector('[data-hero-pause]');
+		var captions = hero.querySelectorAll('[data-hero-caption]');
 		var DELAY = 10000; // Смена фото каждые 10 секунд.
 		var current = 0;
 		var elapsed = 0; // Сколько мс показывается текущее фото — по нему заполняется полоска.
@@ -171,6 +172,7 @@
 			current = (i + slides.length) % slides.length;
 			elapsed = 0;
 			slides.forEach(function (s, n) { s.classList.toggle('is-active', n === current); });
+			captions.forEach(function (c) { c.classList.toggle('is-active', Number(c.dataset.heroCaption) === current); });
 			dots.forEach(function (d, n) {
 				if (n === current) { d.setAttribute('aria-current', 'true'); } else { d.removeAttribute('aria-current'); }
 			});

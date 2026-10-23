@@ -33,6 +33,17 @@ $rmt_slides = rmt_hero_images() ?: array( 0 );
 					<button class="hero__dot" type="button" data-hero-dot="<?php echo (int) $i; ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: 1: номер фото, 2: всего фото */ __( 'Фото %1$d из %2$d', 'remont' ), $i + 1, count( $rmt_slides ) ) ); ?>"<?php echo 0 === $i ? ' aria-current="true"' : ''; ?>></button>
 				<?php endforeach; ?>
 			</div>
+			<?php // Подпись: из какого проекта фото, ссылка на его страницу. Видна подпись только текущего фото. ?>
+			<div class="hero__captions">
+				<?php foreach ( $rmt_slides as $i => $rmt_slide ) : ?>
+					<?php $rmt_project = rmt_image_project( $rmt_slide ); ?>
+					<?php if ( $rmt_project ) : ?>
+						<a class="hero__caption link-arrow link-arrow--light<?php echo 0 === $i ? ' is-active' : ''; ?>" href="<?php echo esc_url( get_permalink( $rmt_project ) ); ?>" data-hero-caption="<?php echo (int) $i; ?>">
+							<span><?php echo esc_html( get_the_title( $rmt_project ) ); ?></span><?php echo rmt_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</a>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
 			<button class="hero__pause" type="button" data-hero-pause aria-pressed="false" aria-label="<?php esc_attr_e( 'Остановить смену фото', 'remont' ); ?>">
 				<svg class="hero__pause-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2h3v12H4zM9 2h3v12H9z"/></svg>
 				<svg class="hero__play-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2l10 6-10 6z"/></svg>

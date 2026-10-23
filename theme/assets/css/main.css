@@ -536,6 +536,17 @@ h3.display { font-size: var(--fs-h3); }
 .hero__pause:hover { border-color: var(--c-white); }
 .hero__pause svg { width: 12px; height: 12px; fill: currentColor; }
 .hero__play-icon, .hero__pause[aria-pressed="true"] .hero__pause-icon { display: none; }
+/* Подпись «из какого проекта фото» — справа; видна только у текущего фото. */
+.hero__captions { order: 3; position: relative; display: grid; justify-items: end; margin-left: auto; text-align: right; }
+.hero__caption { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .6s var(--ease), visibility .6s, color .25s var(--ease); }
+.hero__caption.is-active { opacity: 1; visibility: visible; }
+@media (max-width: 767px) {
+	/* На телефоне подпись — отдельной строкой над полосками. */
+	.hero[data-hero-slider] { padding-bottom: 132px; }
+	.hero__controls { flex-wrap: wrap; row-gap: 14px; }
+	.hero__captions { order: -1; flex-basis: 100%; }
+	.hero__caption .icon { width: 32px; }
+}
 .hero__pause[aria-pressed="true"] .hero__play-icon { display: block; }
 
 .hero__content { position: relative; }

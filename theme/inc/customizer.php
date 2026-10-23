@@ -112,6 +112,26 @@ function rmt_hero_images() {
 	return $ids;
 }
 
+/**
+ * Опубликованный проект, в галерее (или на обложке) которого есть это фото — для подписи в карусели.
+ *
+ * @return WP_Post|null
+ */
+function rmt_image_project( $attachment_id ) {
+	static $map = null;
+	if ( null === $map ) {
+		$map = array();
+		foreach ( get_posts( array( 'post_type' => 'project', 'posts_per_page' => 100, 'orderby' => 'menu_order', 'order' => 'ASC' ) ) as $project ) {
+			foreach ( array_merge( rmt_gallery_ids( $project->ID ), array( (int) get_post_thumbnail_id( $project ) ) ) as $id ) {
+				if ( $id && ! isset( $map[ $id ] ) ) {
+					$map[ $id ] = $project;
+				}
+			}
+		}
+	}
+	return $map[ (int) $attachment_id ] ?? null;
+}
+
 add_action( 'customize_register', 'rmt_customize_register' );
 function rmt_customize_register( WP_Customize_Manager $wp_customize ) {
 	$defaults = rmt_defaults();
