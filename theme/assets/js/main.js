@@ -158,23 +158,33 @@
 		var pauseBtn = hero.querySelector('[data-hero-pause]');
 		var DELAY = 10000; // Смена фото каждые 10 секунд.
 		var current = 0;
-		var timer = null;
+		var elapsed = 0; // Сколько мс показывается текущее фото — по нему заполняется полоска.
+		var last = null;
 		// Кто попросил меньше анимации в системе — без автопрокрутки, листать можно вручную.
 		var stopped = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+		var setProgress = function () {
+			dots[current].style.setProperty('--progress', String(Math.min(elapsed / DELAY, 1)));
+		};
 		var go = function (i) {
+			dots[current].style.setProperty('--progress', '0'); // Прошлая полоска обнуляется.
 			current = (i + slides.length) % slides.length;
+			elapsed = 0;
 			slides.forEach(function (s, n) { s.classList.toggle('is-active', n === current); });
 			dots.forEach(function (d, n) {
 				if (n === current) { d.setAttribute('aria-current', 'true'); } else { d.removeAttribute('aria-current'); }
 			});
+			setProgress();
 		};
-		var stopTimer = function () { clearInterval(timer); timer = null; };
-		var startTimer = function () {
-			stopTimer();
-			if (!stopped && !document.hidden) {
-				timer = setInterval(function () { go(current + 1); }, DELAY);
+		// Полоска заполняется плавно; когда заполнилась — следующее фото.
+		var tick = function (now) {
+			if (last !== null && !stopped) {
+				// Вкладка была скрыта — кадры не шли, время не засчитываем.
+				elapsed += Math.min(now - last, 100);
+				if (elapsed >= DELAY) { go(current + 1); } else { setProgress(); }
 			}
+			last = now;
+			requestAnimationFrame(tick);
 		};
 		var syncPause = function () {
 			pauseBtn.setAttribute('aria-pressed', String(stopped));
@@ -182,12 +192,11 @@
 		};
 
 		dots.forEach(function (dot, n) {
-			dot.addEventListener('click', function () { go(n); startTimer(); });
+			dot.addEventListener('click', function () { go(n); });
 		});
 		pauseBtn.addEventListener('click', function () {
 			stopped = !stopped;
 			syncPause();
-			startTimer();
 		});
 
 		// Свайп на телефоне.
@@ -197,14 +206,11 @@
 			if (touchX === null) { return; }
 			var dx = e.changedTouches[0].clientX - touchX;
 			touchX = null;
-			if (Math.abs(dx) > 50) { go(current + (dx < 0 ? 1 : -1)); startTimer(); }
+			if (Math.abs(dx) > 50) { go(current + (dx < 0 ? 1 : -1)); }
 		}, { passive: true });
 
-		// Пока вкладка скрыта — не листаем.
-		document.addEventListener('visibilitychange', startTimer);
-
 		syncPause();
-		startTimer();
+		requestAnimationFrame(tick);
 	}
 
 	/* ---------- Просмотр фото галереи ---------- */

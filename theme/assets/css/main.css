@@ -521,12 +521,13 @@ h3.display { font-size: var(--fs-h3); }
 	position: relative; width: 44px; height: 32px; padding: 0;
 	border: 0; background: none; cursor: pointer;
 }
-.hero__dot::before {
+.hero__dot::before, .hero__dot::after {
 	content: ""; position: absolute; left: 6px; right: 6px; top: 50%; height: 3px; margin-top: -1.5px;
-	background: rgba(255, 255, 255, .45); transition: background-color .25s var(--ease);
 }
-.hero__dot:hover::before { background: rgba(255, 255, 255, .8); }
-.hero__dot[aria-current="true"]::before { background: var(--c-accent); }
+.hero__dot::before { background: rgba(255, 255, 255, .45); transition: background-color .25s var(--ease); }
+.hero__dot:hover::before, .hero__dot[aria-current="true"]::before { background: rgba(255, 255, 255, .85); }
+/* Полоска загрузки: заполняется, пока показано фото (--progress от 0 до 1 задаёт скрипт). */
+.hero__dot::after { background: var(--c-accent); transform: scaleX(var(--progress, 0)); transform-origin: left; }
 .hero__pause {
 	display: grid; place-items: center; width: 32px; height: 32px; padding: 0;
 	border: 1px solid rgba(255, 255, 255, .45); border-radius: 50%;
