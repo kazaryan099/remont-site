@@ -39,7 +39,7 @@ $rmt_slides = rmt_hero_images() ?: array( 0 );
 					<?php $rmt_project = rmt_image_project( $rmt_slide ); ?>
 					<?php if ( $rmt_project ) : ?>
 						<a class="hero__caption link-arrow link-arrow--light<?php echo 0 === $i ? ' is-active' : ''; ?>" href="<?php echo esc_url( get_permalink( $rmt_project ) ); ?>" data-hero-caption="<?php echo (int) $i; ?>">
-							<span><?php echo esc_html( get_the_title( $rmt_project ) ); ?></span><?php echo rmt_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<span><?php echo esc_html( get_the_title( $rmt_project ) ); ?></span>
 						</a>
 					<?php endif; ?>
 				<?php endforeach; ?>
