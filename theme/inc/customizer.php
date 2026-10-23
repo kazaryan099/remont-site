@@ -26,7 +26,7 @@ function rmt_defaults() {
 		'metrika_id'       => '113714464',
 
 		// Герой.
-		'hero_kicker'      => 'Ремонт квартир под ключ',
+		'hero_kicker'      => 'Наши проекты',
 		'hero_title'       => 'Ремонт квартир и домов',
 		'hero_text'        => '',
 		'home_desc'        => 'Ремонт квартир и домов под ключ в Москве и Московской области: замер, смета, черновые и чистовые работы, закупка материалов и уборка. Этапы и стоимость фиксируем в договоре.',
@@ -169,7 +169,7 @@ function rmt_customize_register( WP_Customize_Manager $wp_customize ) {
 		'rmt_hero'     => array(
 			'title'  => __( 'Главная: первый экран', 'remont' ),
 			'fields' => array(
-				'hero_kicker' => array( 'text', __( 'Надзаголовок', 'remont' ) ),
+				'hero_kicker' => array( 'text', __( 'Надзаголовок — ссылка на портфолио', 'remont' ) ),
 				'hero_title'  => array( 'text', __( 'Заголовок (H1)', 'remont' ) ),
 				'hero_text'   => array( 'textarea', __( 'Подзаголовок (пусто — не показывается)', 'remont' ) ),
 				'home_desc'   => array( 'textarea', __( 'Описание главной для поисковиков (на странице не показывается)', 'remont' ) ),

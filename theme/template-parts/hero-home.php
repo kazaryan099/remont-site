@@ -52,7 +52,9 @@ $rmt_slides = rmt_hero_images() ?: array( 0 );
 	<?php endif; ?>
 	<div class="hero__content container">
 		<?php if ( rmt_opt( 'hero_kicker' ) ) : ?>
-			<p class="kicker kicker--light"><?php echo esc_html( rmt_opt( 'hero_kicker' ) ); ?></p>
+			<p class="kicker kicker--light">
+				<a class="hero__kicker-link" href="<?php echo esc_url( get_post_type_archive_link( 'project' ) ); ?>"><?php echo esc_html( rmt_opt( 'hero_kicker' ) ); ?><?php echo rmt_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
+			</p>
 		<?php endif; ?>
 		<h1 class="hero__title display" id="hero-title"><?php echo esc_html( rmt_opt( 'hero_title' ) ); ?></h1>
 		<?php if ( rmt_opt( 'hero_text' ) ) : ?>
