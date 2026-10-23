@@ -55,7 +55,9 @@ $rmt_slides = rmt_hero_images() ?: array( 0 );
 			<p class="kicker kicker--light"><?php echo esc_html( rmt_opt( 'hero_kicker' ) ); ?></p>
 		<?php endif; ?>
 		<h1 class="hero__title display" id="hero-title"><?php echo esc_html( rmt_opt( 'hero_title' ) ); ?></h1>
-		<p class="hero__text"><?php echo esc_html( rmt_opt( 'hero_text' ) ); ?></p>
+		<?php if ( rmt_opt( 'hero_text' ) ) : ?>
+			<p class="hero__text"><?php echo esc_html( rmt_opt( 'hero_text' ) ); ?></p>
+		<?php endif; ?>
 		<div class="hero__actions">
 			<a class="btn btn--lg" href="#calculator"><?php echo esc_html( rmt_opt( 'hero_btn' ) ); ?></a>
 			<?php echo rmt_link_arrow( '#lead-form', rmt_opt( 'hero_link' ), 'link-arrow--light link-arrow--lg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

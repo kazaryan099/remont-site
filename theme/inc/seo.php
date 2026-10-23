@@ -22,7 +22,7 @@ function rmt_current_url() {
 function rmt_meta_description() {
 	$desc = '';
 	if ( is_front_page() ) {
-		$desc = rmt_opt( 'hero_text' );
+		$desc = rmt_opt( 'home_desc' ) ?: rmt_opt( 'hero_text' );
 	} elseif ( is_singular() ) {
 		$post = get_queried_object();
 		$desc = get_post_meta( $post->ID, '_rmt_seo_desc', true );

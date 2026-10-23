@@ -28,7 +28,8 @@ function rmt_defaults() {
 		// Герой.
 		'hero_kicker'      => 'Ремонт квартир под ключ',
 		'hero_title'       => 'Ремонт квартир и домов',
-		'hero_text'        => 'Берём на себя всё: замер, смету, черновые и чистовые работы, закупку материалов и уборку. Этапы и стоимость фиксируем в договоре.',
+		'hero_text'        => '',
+		'home_desc'        => 'Ремонт квартир и домов под ключ в Москве и Московской области: замер, смета, черновые и чистовые работы, закупка материалов и уборка. Этапы и стоимость фиксируем в договоре.',
 		'hero_btn'         => 'Рассчитать стоимость',
 		'hero_link'        => 'Получить смету бесплатно',
 		'hero_image'       => 0,
@@ -170,7 +171,8 @@ function rmt_customize_register( WP_Customize_Manager $wp_customize ) {
 			'fields' => array(
 				'hero_kicker' => array( 'text', __( 'Надзаголовок', 'remont' ) ),
 				'hero_title'  => array( 'text', __( 'Заголовок (H1)', 'remont' ) ),
-				'hero_text'   => array( 'textarea', __( 'Подзаголовок', 'remont' ) ),
+				'hero_text'   => array( 'textarea', __( 'Подзаголовок (пусто — не показывается)', 'remont' ) ),
+				'home_desc'   => array( 'textarea', __( 'Описание главной для поисковиков (на странице не показывается)', 'remont' ) ),
 				'hero_btn'    => array( 'text', __( 'Текст кнопки', 'remont' ) ),
 				'hero_link'   => array( 'text', __( 'Текст ссылки', 'remont' ) ),
 				'hero_image'   => array( 'image', __( 'Фон: фото 1 (оно же — картинка для соцсетей)', 'remont' ) ),
