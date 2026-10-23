@@ -203,6 +203,21 @@ function rmt_fallback_menu( $args = array() ) {
 }
 
 /**
+ * Пункт-якорь («Стоимость» → /#calculator) ведёт на блок внутри главной, а не на отдельный раздел.
+ * WordPress считает его текущим на главной и подсвечивает — снимаем эту отметку.
+ */
+add_filter( 'wp_nav_menu_objects', 'rmt_menu_unmark_anchors' );
+function rmt_menu_unmark_anchors( $items ) {
+	foreach ( $items as $item ) {
+		if ( false !== strpos( (string) $item->url, '#' ) ) {
+			$item->current = false;
+			$item->classes = array_diff( (array) $item->classes, array( 'current-menu-item', 'current_page_item', 'current-menu-ancestor', 'current-menu-parent' ) );
+		}
+	}
+	return $items;
+}
+
+/**
  * Кнопки раскрытия подменю для клавиатуры и сенсорных экранов.
  */
 add_filter( 'walker_nav_menu_start_el', 'rmt_submenu_toggle', 10, 4 );

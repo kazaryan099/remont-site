@@ -56,6 +56,7 @@
 	--section: clamp(32px, 3.6vw, 52px);
 	--gap: clamp(16px, 2vw, 24px);
 	--header-h: 72px;
+	--facts-h: 136px; /* высота полосы фактов под первым экраном на компьютере */
 
 	--radius: 4px;
 	--shadow-flat: 2px 2px 0 rgba(23, 24, 21, .07);
@@ -492,8 +493,9 @@ h3.display { font-size: var(--fs-h3); }
 .hero {
 	position: relative;
 	display: flex; align-items: center;
-	min-height: min(calc(100svh - var(--header-h) - 96px), 860px);
-	min-height: max(560px, min(calc(100svh - var(--header-h) - 96px), 860px));
+	/* Телефоны и планшеты: первый экран — во всю высоту, полоса фактов начинается ниже. */
+	min-height: calc(100vh - var(--header-h));
+	min-height: max(480px, calc(100svh - var(--header-h)));
 	padding-block: clamp(56px, 8vw, 120px);
 	color: var(--c-white);
 	background: var(--c-ink);
@@ -549,6 +551,10 @@ h3.display { font-size: var(--fs-h3); }
 }
 .hero__pause[aria-pressed="true"] .hero__play-icon { display: block; }
 
+/* Компьютер: полоса фактов в одну строку — оставляем ей место, чтобы она была видна целиком, а не обрезана краем экрана. */
+@media (min-width: 1200px) {
+	.hero { min-height: max(480px, min(calc(100svh - var(--header-h) - 1px - var(--facts-h)), 860px)); }
+}
 .hero__content { position: relative; }
 .hero__kicker-link { display: inline-flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; }
 .hero__kicker-link .icon { width: 32px; flex: none; transition: transform .25s var(--ease); }
