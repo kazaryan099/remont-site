@@ -150,6 +150,63 @@
 		update();
 	});
 
+	/* ---------- Карусель фото на первом экране ---------- */
+	var hero = document.querySelector('[data-hero-slider]');
+	if (hero) {
+		var slides = hero.querySelectorAll('[data-hero-slide]');
+		var dots = hero.querySelectorAll('[data-hero-dot]');
+		var pauseBtn = hero.querySelector('[data-hero-pause]');
+		var DELAY = 10000; // Смена фото каждые 10 секунд.
+		var current = 0;
+		var timer = null;
+		// Кто попросил меньше анимации в системе — без автопрокрутки, листать можно вручную.
+		var stopped = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		var go = function (i) {
+			current = (i + slides.length) % slides.length;
+			slides.forEach(function (s, n) { s.classList.toggle('is-active', n === current); });
+			dots.forEach(function (d, n) {
+				if (n === current) { d.setAttribute('aria-current', 'true'); } else { d.removeAttribute('aria-current'); }
+			});
+		};
+		var stopTimer = function () { clearInterval(timer); timer = null; };
+		var startTimer = function () {
+			stopTimer();
+			if (!stopped && !document.hidden) {
+				timer = setInterval(function () { go(current + 1); }, DELAY);
+			}
+		};
+		var syncPause = function () {
+			pauseBtn.setAttribute('aria-pressed', String(stopped));
+			pauseBtn.setAttribute('aria-label', stopped ? 'Включить смену фото' : 'Остановить смену фото');
+		};
+
+		dots.forEach(function (dot, n) {
+			dot.addEventListener('click', function () { go(n); startTimer(); });
+		});
+		pauseBtn.addEventListener('click', function () {
+			stopped = !stopped;
+			syncPause();
+			startTimer();
+		});
+
+		// Свайп на телефоне.
+		var touchX = null;
+		hero.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; }, { passive: true });
+		hero.addEventListener('touchend', function (e) {
+			if (touchX === null) { return; }
+			var dx = e.changedTouches[0].clientX - touchX;
+			touchX = null;
+			if (Math.abs(dx) > 50) { go(current + (dx < 0 ? 1 : -1)); startTimer(); }
+		}, { passive: true });
+
+		// Пока вкладка скрыта — не листаем.
+		document.addEventListener('visibilitychange', startTimer);
+
+		syncPause();
+		startTimer();
+	}
+
 	/* ---------- Просмотр фото галереи ---------- */
 	var gallery = document.querySelector('[data-gallery]');
 	var box = document.querySelector('[data-lightbox]');

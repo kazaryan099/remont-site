@@ -507,6 +507,35 @@ h3.display { font-size: var(--fs-h3); }
 		linear-gradient(90deg, rgba(var(--c-overlay), .82) 0%, rgba(var(--c-overlay), .55) 45%, rgba(var(--c-overlay), .15) 100%),
 		linear-gradient(0deg, rgba(var(--c-overlay), .45) 0%, rgba(var(--c-overlay), 0) 40%);
 }
+/* Карусель фото: плавная смена (fade) */
+.hero[data-hero-slider] { padding-bottom: clamp(96px, 10vw, 136px); }
+.hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s var(--ease); }
+.hero__slide.is-active { opacity: 1; }
+.hero__controls {
+	position: absolute; left: 0; right: 0; bottom: clamp(20px, 3vw, 36px);
+	display: flex; align-items: center; gap: 12px;
+}
+.hero__dots { display: flex; gap: 4px; }
+.hero__dot {
+	position: relative; width: 44px; height: 32px; padding: 0;
+	border: 0; background: none; cursor: pointer;
+}
+.hero__dot::before {
+	content: ""; position: absolute; left: 6px; right: 6px; top: 50%; height: 3px; margin-top: -1.5px;
+	background: rgba(255, 255, 255, .45); transition: background-color .25s var(--ease);
+}
+.hero__dot:hover::before { background: rgba(255, 255, 255, .8); }
+.hero__dot[aria-current="true"]::before { background: var(--c-accent); }
+.hero__pause {
+	display: grid; place-items: center; width: 32px; height: 32px; padding: 0;
+	border: 1px solid rgba(255, 255, 255, .45); border-radius: 50%;
+	background: none; color: var(--c-white); cursor: pointer;
+}
+.hero__pause:hover { border-color: var(--c-white); }
+.hero__pause svg { width: 12px; height: 12px; fill: currentColor; }
+.hero__play-icon, .hero__pause[aria-pressed="true"] .hero__pause-icon { display: none; }
+.hero__pause[aria-pressed="true"] .hero__play-icon { display: block; }
+
 .hero__content { position: relative; }
 .hero__title { max-width: 11.5em; margin-bottom: .4em; color: var(--c-white); }
 .hero__text {

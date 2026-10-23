@@ -416,6 +416,7 @@ foreach ( array( 'hello-world' => 'post', 'sample-page' => 'page' ) as $slug => 
 // Реальный проект: фото главной, услуг и страниц берутся из него.
 require __DIR__ . '/sinergiya.php';
 require __DIR__ . '/portfolio.php';
+require __DIR__ . '/hero-slides.php';
 require __DIR__ . '/policy-metrika.php';
 
 flush_rewrite_rules();

@@ -32,7 +32,11 @@ function rmt_defaults() {
 		'hero_btn'         => 'Рассчитать стоимость',
 		'hero_link'        => 'Получить смету бесплатно',
 		'hero_image'       => 0,
-		'facts'            => "Смета до старта | объём и цена фиксируются в договоре\nПоэтапная оплата | платите за выполненный этап\nФотоотчёты | показываем ход работ на объекте\nОдин ответственный | прораб ведёт объект от замера до сдачи\nМатериалы | закупаем и привозим сами или по вашему списку",
+		'hero_image_2'     => 0,
+		'hero_image_3'     => 0,
+		'hero_image_4'     => 0,
+		'hero_image_5'     => 0,
+		'facts'          => "Смета до старта | объём и цена фиксируются в договоре\nПоэтапная оплата | платите за выполненный этап\nФотоотчёты | показываем ход работ на объекте\nОдин ответственный | прораб ведёт объект от замера до сдачи\nМатериалы | закупаем и привозим сами или по вашему списку",
 
 		// Секции главной.
 		'services_title'   => 'Какой ремонт нужен',
@@ -92,6 +96,22 @@ function rmt_opt_pairs( $key ) {
 	return $items;
 }
 
+/**
+ * Фото карусели первого экрана: заполненные поля «Фон: фото 1–5» по порядку.
+ *
+ * @return int[]
+ */
+function rmt_hero_images() {
+	$ids = array();
+	foreach ( array( 'hero_image', 'hero_image_2', 'hero_image_3', 'hero_image_4', 'hero_image_5' ) as $key ) {
+		$id = (int) rmt_opt( $key );
+		if ( $id && wp_attachment_is_image( $id ) && ! in_array( $id, $ids, true ) ) {
+			$ids[] = $id;
+		}
+	}
+	return $ids;
+}
+
 add_action( 'customize_register', 'rmt_customize_register' );
 function rmt_customize_register( WP_Customize_Manager $wp_customize ) {
 	$defaults = rmt_defaults();
@@ -133,7 +153,11 @@ function rmt_customize_register( WP_Customize_Manager $wp_customize ) {
 				'hero_text'   => array( 'textarea', __( 'Подзаголовок', 'remont' ) ),
 				'hero_btn'    => array( 'text', __( 'Текст кнопки', 'remont' ) ),
 				'hero_link'   => array( 'text', __( 'Текст ссылки', 'remont' ) ),
-				'hero_image'  => array( 'image', __( 'Фоновое фото', 'remont' ) ),
+				'hero_image'   => array( 'image', __( 'Фон: фото 1 (оно же — картинка для соцсетей)', 'remont' ) ),
+				'hero_image_2' => array( 'image', __( 'Фон: фото 2', 'remont' ) ),
+				'hero_image_3' => array( 'image', __( 'Фон: фото 3', 'remont' ) ),
+				'hero_image_4' => array( 'image', __( 'Фон: фото 4', 'remont' ) ),
+				'hero_image_5' => array( 'image', __( 'Фон: фото 5', 'remont' ) ),
 				'facts'       => array( 'textarea', __( 'Полоса фактов (Заголовок | Подпись, по строке на пункт)', 'remont' ) ),
 			),
 		),

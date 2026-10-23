@@ -6,22 +6,39 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+
+// Фото — декоративный фон, поэтому alt пустой. Без фото — одна заглушка.
+$rmt_slides = rmt_hero_images() ?: array( 0 );
 ?>
-<section class="hero" aria-labelledby="hero-title">
+<section class="hero" aria-labelledby="hero-title"<?php echo count( $rmt_slides ) > 1 ? ' data-hero-slider' : ''; ?>>
 	<div class="hero__media">
-		<?php
-		echo rmt_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			(int) rmt_opt( 'hero_image' ),
-			'rmt-hero',
-			array(
-				'loading'       => 'eager',
-				'fetchpriority' => 'high',
-				'sizes'         => '100vw',
-				'alt'           => '',
-			)
-		);
-		?>
+		<?php foreach ( $rmt_slides as $i => $rmt_slide ) : ?>
+			<div class="hero__slide<?php echo 0 === $i ? ' is-active' : ''; ?>" data-hero-slide>
+				<?php
+				echo rmt_image( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					$rmt_slide,
+					'rmt-hero',
+					0 === $i
+						? array( 'loading' => 'eager', 'fetchpriority' => 'high', 'sizes' => '100vw', 'alt' => '' )
+						: array( 'sizes' => '100vw', 'alt' => '' )
+				);
+				?>
+			</div>
+		<?php endforeach; ?>
 	</div>
+	<?php if ( count( $rmt_slides ) > 1 ) : ?>
+		<div class="hero__controls container">
+			<div class="hero__dots" role="group" aria-label="<?php esc_attr_e( 'Фото на первом экране', 'remont' ); ?>">
+				<?php foreach ( $rmt_slides as $i => $rmt_slide ) : ?>
+					<button class="hero__dot" type="button" data-hero-dot="<?php echo (int) $i; ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: 1: номер фото, 2: всего фото */ __( 'Фото %1$d из %2$d', 'remont' ), $i + 1, count( $rmt_slides ) ) ); ?>"<?php echo 0 === $i ? ' aria-current="true"' : ''; ?>></button>
+				<?php endforeach; ?>
+			</div>
+			<button class="hero__pause" type="button" data-hero-pause aria-pressed="false" aria-label="<?php esc_attr_e( 'Остановить смену фото', 'remont' ); ?>">
+				<svg class="hero__pause-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2h3v12H4zM9 2h3v12H9z"/></svg>
+				<svg class="hero__play-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2l10 6-10 6z"/></svg>
+			</button>
+		</div>
+	<?php endif; ?>
 	<div class="hero__content container">
 		<?php if ( rmt_opt( 'hero_kicker' ) ) : ?>
 			<p class="kicker kicker--light"><?php echo esc_html( rmt_opt( 'hero_kicker' ) ); ?></p>
