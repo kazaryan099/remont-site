@@ -512,6 +512,21 @@ h3.display { font-size: var(--fs-h3); }
 		linear-gradient(90deg, rgba(var(--c-overlay), .82) 0%, rgba(var(--c-overlay), .55) 45%, rgba(var(--c-overlay), .15) 100%),
 		linear-gradient(0deg, rgba(var(--c-overlay), .45) 0%, rgba(var(--c-overlay), 0) 40%);
 }
+/* Главная: фото светлее — затемнение только слева, под текстом, и лёгкое снизу под буллетами. */
+.hero .hero__media::after {
+	background:
+		linear-gradient(90deg, rgba(var(--c-overlay), .72) 0%, rgba(var(--c-overlay), .55) 48%, rgba(var(--c-overlay), .1) 72%, rgba(var(--c-overlay), 0) 88%),
+		linear-gradient(0deg, rgba(var(--c-overlay), .32) 0%, rgba(var(--c-overlay), 0) 30%);
+}
+@media (max-width: 767px) {
+	/* На телефоне текст на всю ширину — ровное затемнение, сильнее в середине, где заголовок и кнопки. */
+	.hero .hero__media::after {
+		background: linear-gradient(0deg, rgba(var(--c-overlay), .55) 0%, rgba(var(--c-overlay), .6) 45%, rgba(var(--c-overlay), .4) 100%);
+	}
+}
+/* Лёгкий ореол вокруг белого текста — читается и на светлых участках фото. */
+.hero__title, .hero__actions, .hero__caption { text-shadow: 0 1px 2px rgba(var(--c-overlay), .35), 0 1px 18px rgba(var(--c-overlay), .35); }
+
 /* Карусель фото: плавная смена (fade) */
 .hero[data-hero-slider] { padding-bottom: clamp(96px, 10vw, 136px); }
 .hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s var(--ease); }
@@ -571,6 +586,9 @@ h3.display { font-size: var(--fs-h3); }
 .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 36px; margin-top: 36px; }
 /* Кнопка «Рассчитать стоимость» — того же кегля, что ссылка «Оставить заявку» рядом, и заметно крупнее неё. */
 .hero__actions .btn { min-height: 60px; padding: 20px 40px; font-size: clamp(.875rem, .8rem + .4vw, 1.0625rem); }
+/* Прозрачная кнопка с тонкой белой рамкой; при наведении — белая заливка. */
+.hero__actions .btn { background: rgba(var(--c-overlay), .12); border-color: rgba(255, 255, 255, .9); color: var(--c-white); }
+.hero__actions .btn:hover { background: var(--c-white); border-color: var(--c-white); color: var(--c-ink); text-shadow: none; }
 
 /* Полоса фактов */
 .facts { background: var(--c-ink); color: var(--c-white); }
