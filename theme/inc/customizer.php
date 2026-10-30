@@ -18,7 +18,7 @@ function rmt_defaults() {
 		'email'            => '',
 		'region'           => 'Москва и Московская область',
 		'address'          => '',
-		'schedule'         => 'Пн–Пт 9:00–19:00, Сб–Вс 10:00–16:00',
+		'schedule'         => 'Пн–Вс 9:00–21:00',
 		'telegram'         => '',
 		'whatsapp'         => '',
 		'max'              => '',
