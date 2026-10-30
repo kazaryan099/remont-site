@@ -100,14 +100,14 @@ wp_enqueue_script( 'rmt-calculator' );
 			<aside class="calc__summary" aria-labelledby="calc-summary-title">
 				<p class="calc__summary-kicker" id="calc-summary-title"><?php esc_html_e( 'Окончательная стоимость', 'remont' ); ?></p>
 				<p class="calc__total" aria-live="polite" aria-atomic="true" data-calc-total>—</p>
-				<p class="calc__terms"><?php esc_html_e( 'Цена под ключ за работы, без учёта стоимости материалов', 'remont' ); ?></p>
+				<p class="calc__terms"><?php echo rmt_icon( 'check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?><span><?php esc_html_e( 'Цена под ключ за работы, без учёта стоимости материалов', 'remont' ); ?></span></p>
 				<dl class="calc__lines">
 					<div><dt><?php esc_html_e( 'Тариф', 'remont' ); ?></dt><dd data-calc-tariff>—</dd></div>
 					<div><dt><?php esc_html_e( 'Площадь', 'remont' ); ?></dt><dd data-calc-area-out>—</dd></div>
 					<div><dt><?php esc_html_e( 'Ставка', 'remont' ); ?></dt><dd data-calc-rate>—</dd></div>
 				</dl>
 				<p class="calc__note">
-					<?php esc_html_e( 'Это ориентир, а не смета: точная стоимость считается после замера и выбора материалов.', 'remont' ); ?>
+					<?php esc_html_e( 'Стоимость работ зависит только от площади и тарифа и фиксируется в договоре.', 'remont' ); ?>
 					<?php if ( $rmt_s['demo'] ) : ?>
 						<strong class="calc__demo"><?php esc_html_e( 'Сейчас используются демонстрационные ставки.', 'remont' ); ?></strong>
 					<?php endif; ?>
