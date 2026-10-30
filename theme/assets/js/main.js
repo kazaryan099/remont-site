@@ -17,6 +17,35 @@
 		window.addEventListener('scroll', onScroll, { passive: true });
 	}
 
+	/* ---------- Поле телефона: +7 задан, вводятся 10 цифр в виде (906) 047-24-67 ---------- */
+	var phoneDigits = function (value) {
+		var d = String(value).replace(/\D+/g, '');
+		// Вставили номер целиком (+7 906…, 8 906…) — код страны отбрасываем.
+		if (d.length > 10 && (d[0] === '7' || d[0] === '8')) { d = d.slice(1); }
+		return d.slice(0, 10);
+	};
+	var phoneFormat = function (d) {
+		if (!d) { return ''; }
+		var out = '(' + d.slice(0, 3);
+		if (d.length >= 3) { out += ') ' + d.slice(3, 6); }
+		if (d.length > 6) { out += '-' + d.slice(6, 8); }
+		if (d.length > 8) { out += '-' + d.slice(8, 10); }
+		return out;
+	};
+	document.querySelectorAll('[data-phone-mask]').forEach(function (input) {
+		var apply = function () { input.value = phoneFormat(phoneDigits(input.value)); };
+		input.addEventListener('input', function (e) {
+			// Стирание: если удалили только скобку, пробел или дефис — убираем и цифру перед ними.
+			if (e.inputType === 'deleteContentBackward' && phoneDigits(input.value).length === phoneDigits(input.dataset.prev || '').length) {
+				input.value = phoneFormat(phoneDigits(input.value).slice(0, -1));
+			} else {
+				apply();
+			}
+			input.dataset.prev = input.value;
+		});
+		apply();
+	});
+
 	/* ---------- Нажатие на номер телефона: меню «Позвонить / WhatsApp / Telegram / MAX» ---------- */
 	var pop = document.querySelector('[data-contact-pop]');
 	if (pop) {
@@ -346,7 +375,7 @@
 			var name = form.elements.name.value.trim();
 			var digits = form.elements.phone.value.replace(/\D+/g, '');
 			if (name.length < 2) { errors.name = 'Укажите имя: от 2 до 60 букв.'; }
-			if (digits.length < 10 || digits.length > 15) { errors.phone = 'Проверьте номер телефона: нужно 10–15 цифр.'; }
+			if (digits.length !== 10) { errors.phone = 'Введите номер полностью: 10 цифр после +7.'; }
 			if (!form.elements.repair_type.value) { errors.repair_type = 'Выберите тип ремонта.'; }
 			return errors;
 		};

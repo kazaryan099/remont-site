@@ -83,8 +83,12 @@ $rmt_invalid = fn( $field ) => isset( $rmt_fields[ $field ] ) ? ' aria-invalid="
 					<?php $rmt_error( 'name' ); ?>
 				</div>
 				<div class="field">
-					<label for="lead-phone"><?php esc_html_e( 'Телефон', 'remont' ); ?> <span class="req" aria-hidden="true">*</span></label>
-					<input class="input ym-disable-keys ym-hide-content" type="tel" id="lead-phone" name="phone" required inputmode="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__" aria-describedby="lead-phone-error"<?php echo $rmt_invalid( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+					<label for="lead-phone"><?php esc_html_e( 'Телефон', 'remont' ); ?><span class="visually-hidden"><?php esc_html_e( ', 10 цифр после +7', 'remont' ); ?></span> <span class="req" aria-hidden="true">*</span></label>
+					<?php // Код страны +7 задан и не стирается; вводятся только 10 цифр номера (маска — в main.js, проверка — на сервере). ?>
+					<div class="phone-input">
+						<span class="phone-input__prefix" aria-hidden="true">+7</span>
+						<input class="input ym-disable-keys ym-hide-content" type="tel" id="lead-phone" name="phone" required inputmode="numeric" autocomplete="tel-national" placeholder="(___) ___-__-__" maxlength="20" aria-describedby="lead-phone-error" data-phone-mask<?php echo $rmt_invalid( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+					</div>
 					<?php $rmt_error( 'phone' ); ?>
 				</div>
 				<div class="field">

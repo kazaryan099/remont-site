@@ -100,7 +100,7 @@ function rmt_lead_messages() {
 function rmt_lead_field_messages() {
 	return array(
 		'name'        => __( 'Укажите имя: от 2 до 60 букв.', 'remont' ),
-		'phone'       => __( 'Проверьте номер телефона: нужно 10–15 цифр.', 'remont' ),
+		'phone'       => __( 'Введите номер полностью: 10 цифр после +7.', 'remont' ),
 		'repair_type' => __( 'Выберите тип ремонта.', 'remont' ),
 		/* translators: %d: максимальная площадь из настроек калькулятора */
 		'area'        => sprintf( __( 'Площадь — число от 1 до %d м².', 'remont' ), rmt_calc_settings()['max_area'] ),
@@ -174,13 +174,14 @@ function rmt_lead_handle( array $raw ) {
 		$errors['name'] = $texts['name'];
 	}
 
+	// В форме код +7 задан, вводятся 10 цифр. Номер, вставленный целиком (+7… или 8…), тоже принимаем.
 	$phone_digits = preg_replace( '/\D+/', '', (string) ( $raw['phone'] ?? '' ) );
-	if ( 11 === strlen( $phone_digits ) && '8' === $phone_digits[0] ) {
-		$phone_digits = '7' . substr( $phone_digits, 1 );
-	} elseif ( 10 === strlen( $phone_digits ) ) {
-		$phone_digits = '7' . $phone_digits;
+	if ( 11 === strlen( $phone_digits ) && in_array( $phone_digits[0], array( '7', '8' ), true ) ) {
+		$phone_digits = substr( $phone_digits, 1 );
 	}
-	if ( strlen( $phone_digits ) < 11 || strlen( $phone_digits ) > 15 ) {
+	if ( 10 === strlen( $phone_digits ) ) {
+		$phone_digits = '7' . $phone_digits;
+	} else {
 		$errors['phone'] = $texts['phone'];
 	}
 

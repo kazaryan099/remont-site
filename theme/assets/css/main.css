@@ -943,6 +943,16 @@ h3.display { font-size: var(--fs-h3); }
 	transition: border-color .15s, box-shadow .15s;
 }
 .input::placeholder { color: var(--c-grey); }
+/* Телефон: неизменяемый код +7 слева внутри поля. */
+.phone-input { position: relative; }
+.phone-input__prefix {
+	position: absolute; left: 1px; top: 1px; bottom: 1px; z-index: 1;
+	display: flex; align-items: center; padding: 0 10px 0 14px;
+	border-right: 1px solid var(--c-line); border-radius: var(--radius) 0 0 var(--radius);
+	font-family: var(--f-ui); font-size: 1rem; font-weight: 600; color: var(--c-ink);
+	pointer-events: none;
+}
+.phone-input .input { padding-left: 58px; }
 .input:hover { border-color: var(--c-ink); }
 .input:focus { outline: none; border-color: var(--c-ink); box-shadow: 0 0 0 3px var(--c-accent); }
 .input[aria-invalid="true"] { border-color: var(--c-ink); border-width: 2px; }
