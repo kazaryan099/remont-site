@@ -100,6 +100,7 @@ wp_enqueue_script( 'rmt-calculator' );
 			<aside class="calc__summary" aria-labelledby="calc-summary-title">
 				<p class="calc__summary-kicker" id="calc-summary-title"><?php esc_html_e( 'Предварительная стоимость', 'remont' ); ?></p>
 				<p class="calc__total" aria-live="polite" aria-atomic="true" data-calc-total>—</p>
+				<p class="calc__terms"><?php esc_html_e( 'Цена под ключ за работы, без учёта стоимости материалов', 'remont' ); ?></p>
 				<dl class="calc__lines">
 					<div><dt><?php esc_html_e( 'Тариф', 'remont' ); ?></dt><dd data-calc-tariff>—</dd></div>
 					<div><dt><?php esc_html_e( 'Площадь', 'remont' ); ?></dt><dd data-calc-area-out>—</dd></div>

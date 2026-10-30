@@ -110,7 +110,7 @@ update_post_meta( $rmt_sin_id, '_rmt_gallery', implode( ',', array_values( $rmt_
 if ( ! empty( $rmt_sin['sinergiya-kuhnya-stolovaya'] ) ) {
 	set_post_thumbnail( $rmt_sin_id, $rmt_sin['sinergiya-kuhnya-stolovaya'] );
 }
-$rmt_sin_term = get_term_by( 'slug', 'dizajnerskij-remont', 'repair_type' );
+$rmt_sin_term = get_term_by( 'slug', 'remont-kvartir', 'repair_type' );
 if ( $rmt_sin_term ) {
 	wp_set_object_terms( $rmt_sin_id, array( $rmt_sin_term->term_id ), 'repair_type' );
 }
@@ -125,10 +125,6 @@ set_theme_mod( 'cta_image', $rmt_pick( 'sinergiya-detskaya' ) );
 set_theme_mod( 'featured_project', $rmt_sin_id );
 
 $rmt_thumbs = array(
-	array( 'service', 'kosmeticheskij-remont', 'sinergiya-gostevaya-spalnya' ),
-	array( 'service', 'dizajnerskij-remont', 'sinergiya-spalnya-krovat' ),
-	array( 'service', 'remont-v-novostrojke', 'sinergiya-dush' ),
-	array( 'service', 'remont-pod-klyuch', 'sinergiya-kuhnya' ),
 	array( 'page', 'o-kompanii', 'sinergiya-kuhnya-stolovaya' ),
 	array( 'page', 'kontakty', 'sinergiya-koridor' ),
 );

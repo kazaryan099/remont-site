@@ -257,3 +257,78 @@ function rmt_project_type( $post_id = null ) {
 	$terms = get_the_terms( $post_id ?: get_the_ID(), 'repair_type' );
 	return ( $terms && ! is_wp_error( $terms ) ) ? $terms[0] : null;
 }
+
+/**
+ * Виды ремонта с проектами — в том же порядке, что и одноимённые услуги («Ремонт квартир», затем «Ремонт домов»).
+ *
+ * @return WP_Term[]
+ */
+function rmt_repair_types() {
+	$terms = get_terms( array( 'taxonomy' => 'repair_type', 'hide_empty' => true ) );
+	if ( is_wp_error( $terms ) ) {
+		return array();
+	}
+	$order = array_flip( wp_list_pluck( get_posts( array( 'post_type' => 'service', 'posts_per_page' => 20, 'orderby' => 'menu_order', 'order' => 'ASC' ) ), 'post_name' ) );
+	usort(
+		$terms,
+		function ( $a, $b ) use ( $order ) {
+			return ( $order[ $a->slug ] ?? PHP_INT_MAX ) <=> ( $order[ $b->slug ] ?? PHP_INT_MAX ) ?: strcmp( $a->name, $b->name );
+		}
+	);
+	return $terms;
+}
+
+/**
+ * Мессенджеры для кнопок «Написать»: WhatsApp и Telegram — по ссылке из настроек или по номеру телефона,
+ * MAX — только по ссылке из настроек (открыть чат MAX по номеру телефона ссылкой нельзя).
+ *
+ * @return array<string, array{label:string,url:string}>
+ */
+function rmt_messengers() {
+	$digits = preg_replace( '/\D+/', '', (string) rmt_opt( 'phone' ) );
+	if ( 11 === strlen( $digits ) && '8' === $digits[0] ) {
+		$digits = '7' . substr( $digits, 1 ); // 8 906 … → 7 906 …
+	}
+	$by_phone = strlen( $digits ) >= 10 && ! preg_match( '/^7?0{10}$/', $digits ); // Заглушка +7 (000) — не в счёт.
+	$list     = array(
+		'whatsapp' => array( 'WhatsApp', rmt_opt( 'whatsapp' ) ?: ( $by_phone ? 'https://wa.me/' . $digits : '' ) ),
+		'telegram' => array( 'Telegram', rmt_opt( 'telegram' ) ?: ( $by_phone ? 'https://t.me/+' . $digits : '' ) ),
+		'max'      => array( 'MAX', rmt_opt( 'max' ) ),
+	);
+	$out = array();
+	foreach ( $list as $key => list( $label, $url ) ) {
+		if ( $url ) {
+			$out[ $key ] = array( 'label' => $label, 'url' => $url );
+		}
+	}
+	return $out;
+}
+
+/** Значок мессенджера (упрощённые знаки, currentColor). */
+function rmt_messenger_icon( $key ) {
+	$paths = array(
+		'whatsapp' => '<path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8.2c.2-.4.5-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.6l-.5.6c-.1.2-.1.4 0 .5.6 1 1.4 1.8 2.5 2.4.2.1.4.1.5 0l.6-.7c.2-.2.4-.2.6-.1l1.6.8c.2.1.3.3.3.5v.4c0 .4-.2.8-.6 1-.6.3-1.4.4-2.2.1-2.4-.9-4.3-2.8-5.2-5.1-.3-.8-.2-1.6.1-2.2Z" fill="currentColor"/>',
+		'telegram' => '<path d="M21 4.5 2.9 11.4c-.9.4-.9 1.5 0 1.8l4.5 1.5 1.7 5.2c.2.6 1 .8 1.5.4l2.5-2.1 4.6 3.4c.6.4 1.4.1 1.6-.6L22.5 6c.2-1-.6-1.8-1.5-1.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m7.6 14.6 9.6-6.2-7 7.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
+		'max'      => '<path d="M12 3a9 9 0 0 0-8.2 12.7L3 21l5.4-.9A9 9 0 1 0 12 3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7.5 15V9.2l2.4 3.4 2.4-3.4V15M14.2 15l2.3-6 2.2 6M15 13.2h3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" transform="translate(-1.5 0) scale(.92) translate(1 1)"/>',
+	);
+	return isset( $paths[ $key ] ) ? '<svg class="icon icon--' . esc_attr( $key ) . '" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' . $paths[ $key ] . '</svg>' : '';
+}
+
+/** Кнопки мессенджеров: значок + название. $class — модификатор группы. */
+function rmt_messenger_links( $class = '' ) {
+	$list = rmt_messengers();
+	if ( ! $list ) {
+		return '';
+	}
+	$html = '<span class="messengers ' . esc_attr( $class ) . '">';
+	foreach ( $list as $key => $m ) {
+		$html .= sprintf(
+			'<a class="messenger messenger--%1$s" href="%2$s" target="_blank" rel="noopener">%3$s<span>%4$s</span></a>',
+			esc_attr( $key ),
+			esc_url( $m['url'] ),
+			rmt_messenger_icon( $key ),
+			esc_html( $m['label'] )
+		);
+	}
+	return $html . '</span>';
+}

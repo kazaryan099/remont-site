@@ -157,3 +157,24 @@ function rmt_archive_order( WP_Query $q ) {
 		$q->set( 'posts_per_page', $q->is_post_type_archive( 'service' ) ? 20 : 9 );
 	}
 }
+
+/**
+ * Прежние адреса пяти услуг и их фильтров в портфолио (до перехода на «Ремонт квартир» и «Ремонт домов»):
+ * постоянный редирект 301 на новые страницы, чтобы старые ссылки и закладки не вели на «страница не найдена».
+ */
+add_action( 'template_redirect', 'rmt_redirect_old_services' );
+function rmt_redirect_old_services() {
+	if ( ! is_404() ) {
+		return;
+	}
+	$old  = array( 'kosmeticheskij-remont', 'kapitalnyj-remont', 'dizajnerskij-remont', 'remont-v-novostrojke', 'remont-pod-klyuch' );
+	$path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+	if ( preg_match( '#^uslugi/(' . implode( '|', $old ) . ')$#', $path ) ) {
+		wp_safe_redirect( home_url( '/uslugi/remont-kvartir/' ), 301 );
+		exit;
+	}
+	if ( preg_match( '#^portfolio/tip/(' . implode( '|', $old ) . ')$#', $path ) ) {
+		wp_safe_redirect( get_post_type_archive_link( 'project' ), 301 );
+		exit;
+	}
+}

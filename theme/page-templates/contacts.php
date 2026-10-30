@@ -45,16 +45,23 @@ while ( have_posts() ) :
 						<dd><?php echo $rmt_value; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- экранировано при сборке массива. ?></dd>
 					</div>
 				<?php endforeach; ?>
-				<?php if ( rmt_opt( 'telegram' ) || rmt_opt( 'whatsapp' ) ) : ?>
+				<?php if ( rmt_messengers() ) : ?>
 					<div class="contact-card">
 						<dt><?php esc_html_e( 'Мессенджеры', 'remont' ); ?></dt>
-						<dd>
-							<?php if ( rmt_opt( 'telegram' ) ) : ?><a href="<?php echo esc_url( rmt_opt( 'telegram' ) ); ?>" target="_blank" rel="noopener">Telegram</a><?php endif; ?>
-							<?php if ( rmt_opt( 'whatsapp' ) ) : ?><a href="<?php echo esc_url( rmt_opt( 'whatsapp' ) ); ?>" target="_blank" rel="noopener">WhatsApp</a><?php endif; ?>
-						</dd>
+						<dd><?php echo rmt_messenger_links(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></dd>
 					</div>
 				<?php endif; ?>
 			</dl>
+			<?php if ( rmt_opt_pairs( 'requisites' ) ) : ?>
+				<section class="requisites card" aria-labelledby="requisites-title">
+					<h2 class="requisites__title" id="requisites-title"><?php esc_html_e( 'Реквизиты', 'remont' ); ?></h2>
+					<dl class="requisites__list">
+						<?php foreach ( rmt_opt_pairs( 'requisites' ) as $rmt_row ) : ?>
+							<div><dt><?php echo esc_html( $rmt_row['title'] ); ?></dt><dd><?php echo esc_html( $rmt_row['text'] ); ?></dd></div>
+						<?php endforeach; ?>
+					</dl>
+				</section>
+			<?php endif; ?>
 			<?php if ( get_the_content() ) : ?>
 				<div class="prose contact-prose"><?php the_content(); ?></div>
 			<?php endif; ?>

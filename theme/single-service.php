@@ -32,8 +32,16 @@ while ( have_posts() ) :
 			<p class="price-card__value"><?php echo esc_html( rmt_meta( 'price' ) ); ?></p>
 		<?php elseif ( $rmt_rate ) : ?>
 			<p class="price-card__value"><?php echo esc_html( sprintf( __( '%s за м²', 'remont' ), rmt_money( $rmt_rate['rate'] ) ) ); ?></p>
+		<?php else : ?>
+			<?php // У услуги нет своего тарифа — показываем все тарифы калькулятора. ?>
+			<ul class="price-card__rates" role="list">
+				<?php foreach ( rmt_calc_settings()['types'] as $rmt_t ) : ?>
+					<li><span><?php echo esc_html( $rmt_t['label'] ); ?></span> <strong><?php echo esc_html( sprintf( __( '%s за м²', 'remont' ), rmt_money( $rmt_t['rate'] ) ) ); ?></strong></li>
+				<?php endforeach; ?>
+			</ul>
 		<?php endif; ?>
 		<p class="price-card__meta">
+			<?php esc_html_e( 'Цена под ключ за работы, без учёта стоимости материалов.', 'remont' ); ?><br>
 			<?php echo rmt_meta( 'duration' ) ? esc_html( sprintf( __( 'Срок: %s', 'remont' ), rmt_meta( 'duration' ) ) ) : esc_html__( 'Срок — по графику после замера', 'remont' ); ?>
 			<?php if ( rmt_calc_settings()['demo'] && ! rmt_meta( 'price' ) ) : ?>
 				<br><strong><?php esc_html_e( 'Демонстрационная ставка', 'remont' ); ?></strong>
@@ -96,7 +104,7 @@ while ( have_posts() ) :
 		'template-parts/services-grid',
 		null,
 		array(
-			'title'   => __( 'Другие виды ремонта', 'remont' ),
+			'title'   => __( 'Другие услуги', 'remont' ),
 			'exclude' => get_the_ID(),
 		)
 	);

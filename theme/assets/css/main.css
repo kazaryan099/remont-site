@@ -36,6 +36,8 @@
 	--c-accent-hover: var(--c-sage-hover);
 	--c-on-accent: var(--c-graphite);
 	--c-on-dark: rgba(255, 255, 255, .86);
+	--c-whatsapp: #128C7E; /* фирменные цвета мессенджеров, затемнены для контраста с белым значком */
+	--c-telegram: #1F8BC2;
 	--c-on-dark-muted: rgba(255, 255, 255, .72);
 	--c-overlay: 23, 24, 21; /* графит для затемнения фото: rgba(var(--c-overlay), .x) */
 
@@ -605,6 +607,7 @@ h3.display { font-size: var(--fs-h3); }
 .services__grid--5 .services__cell:nth-child(2) { grid-column: span 2; }
 .services__grid--4 .services__cell { grid-column: span 3; }
 .services__grid--2 .services__cell { grid-column: span 3; }
+.services__grid--1 .services__cell { grid-column: 1 / -1; }
 
 .tile {
 	position: relative;
@@ -806,7 +809,12 @@ h3.display { font-size: var(--fs-h3); }
 	box-shadow: var(--shadow-card);
 }
 .calc__summary-kicker { margin: 0 0 8px; font-family: var(--f-ui); font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--c-accent); }
-.calc__total { margin: 0 0 20px; font-family: var(--f-ui); font-weight: 700; font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem); line-height: 1.2; color: var(--c-white); }
+.calc__total { margin: 0 0 10px; font-family: var(--f-ui); font-weight: 700; font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem); line-height: 1.2; color: var(--c-white); }
+.calc__terms {
+	display: inline-block; margin: 0 0 18px; padding: 6px 10px;
+	background: var(--c-accent); color: var(--c-on-accent);
+	font-family: var(--f-ui); font-size: .8125rem; font-weight: 600; line-height: 1.4;
+}
 .calc__lines { margin: 0 0 18px; padding: 14px 0; border-block: 1px solid rgba(255, 255, 255, .14); font-family: var(--f-ui); font-size: .875rem; }
 .calc__lines div { display: flex; justify-content: space-between; gap: 16px; padding: 4px 0; }
 .calc__lines dt { color: var(--c-on-dark-muted); }
@@ -981,6 +989,9 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 }
 .price-card__kicker { margin: 0 0 8px; font-family: var(--f-display); font-size: .8125rem; letter-spacing: .12em; text-transform: uppercase; color: var(--c-muted); }
 .price-card__value { margin: 0 0 6px; font-family: var(--f-ui); font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); font-weight: 700; line-height: 1.2; }
+.price-card__rates { margin: 4px 0 14px; padding: 0; list-style: none; font-family: var(--f-ui); }
+.price-card__rates li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--c-line); font-size: .9375rem; }
+.price-card__rates strong { white-space: nowrap; }
 .price-card__meta { margin: 0 0 18px; font-family: var(--f-ui); font-size: .8125rem; color: var(--c-muted); }
 
 .content-grid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: clamp(32px, 5vw, 72px); align-items: start; }
@@ -1135,4 +1146,54 @@ select.input { appearance: none; padding-right: 40px; background-image: url("dat
 @media print {
 	.site-header, .mobile-menu, .lead-section, .cta, .slider__nav, .site-footer__contacts .btn { display: none !important; }
 	body { color: #000; }
+}
+
+/* Мессенджеры: кнопки «Написать» (WhatsApp, Telegram, MAX) */
+.messengers { display: flex; flex-wrap: wrap; gap: 8px; }
+.messenger {
+	display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 14px;
+	border: 1px solid var(--c-line); background: var(--c-surface); color: var(--c-ink);
+	font-family: var(--f-ui); font-size: .875rem; font-weight: 600; text-decoration: none;
+	transition: border-color .2s var(--ease), background-color .2s var(--ease);
+}
+.messenger:hover { border-color: var(--c-ink); color: var(--c-ink); text-decoration: none; }
+.messenger .icon { width: 20px; height: 20px; flex: none; }
+.messenger--whatsapp .icon { color: var(--c-whatsapp); }
+.messenger--telegram .icon { color: var(--c-telegram); }
+.messengers--footer { margin: 0 0 16px; }
+.lead-form__messengers { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--c-line); }
+.lead-form__messengers p { margin: 0 0 10px; font-family: var(--f-ui); font-size: .875rem; color: var(--c-muted); }
+
+/* Плавающие кнопки мессенджеров (появляются после первого экрана) */
+.float-chat {
+	position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 40;
+	display: flex; flex-direction: column; gap: 10px;
+	opacity: 0; visibility: hidden; transform: translateY(12px);
+	transition: opacity .3s var(--ease), transform .3s var(--ease), visibility .3s;
+}
+.float-chat.is-visible { opacity: 1; visibility: visible; transform: none; }
+.float-chat__btn {
+	display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+	background: var(--c-ink); color: var(--c-white);
+	box-shadow: 0 6px 20px rgba(var(--c-overlay), .28);
+	transition: transform .2s var(--ease);
+}
+.float-chat__btn:hover { color: var(--c-white); transform: scale(1.06); }
+.float-chat__btn.messenger--whatsapp { background: var(--c-whatsapp); }
+.float-chat__btn.messenger--telegram { background: var(--c-telegram); }
+.float-chat__btn .icon { width: 26px; height: 26px; color: inherit; }
+.menu-open .float-chat { display: none; }
+@media print { .float-chat { display: none !important; } }
+
+/* Реквизиты на странице «Контакты» */
+.requisites { margin-top: var(--gap); padding: clamp(20px, 2.4vw, 32px); }
+.requisites__title { margin: 0 0 14px; font-family: var(--f-ui); font-size: 1.125rem; font-weight: 700; }
+.requisites__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; margin: 0; font-family: var(--f-ui); font-size: .9375rem; }
+.requisites__list div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--c-line); }
+.requisites__list dt { color: var(--c-muted); }
+.requisites__list dd { margin: 0; text-align: right; font-weight: 600; overflow-wrap: anywhere; user-select: all; }
+@media (max-width: 767px) {
+	.requisites__list { grid-template-columns: 1fr; }
+	.requisites__list div { flex-direction: column; gap: 2px; }
+	.requisites__list dd { text-align: left; }
 }

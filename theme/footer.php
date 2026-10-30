@@ -15,12 +15,7 @@ $rmt_services = get_posts(
 		'order'          => 'ASC',
 	)
 );
-$rmt_types    = get_terms(
-	array(
-		'taxonomy'   => 'repair_type',
-		'hide_empty' => true,
-	)
-);
+$rmt_types    = rmt_repair_types();
 $rmt_privacy  = get_privacy_policy_url();
 ?>
 </main>
@@ -31,7 +26,7 @@ $rmt_privacy  = get_privacy_policy_url();
 			<section class="site-footer__col" aria-labelledby="footer-services">
 				<h2 class="site-footer__title" id="footer-services"><?php esc_html_e( 'Услуги', 'remont' ); ?></h2>
 				<ul>
-					<li><a href="<?php echo esc_url( get_post_type_archive_link( 'service' ) ); ?>"><?php esc_html_e( 'Все виды ремонта', 'remont' ); ?></a></li>
+					<li><a href="<?php echo esc_url( get_post_type_archive_link( 'service' ) ); ?>"><?php esc_html_e( 'Все услуги', 'remont' ); ?></a></li>
 					<?php foreach ( $rmt_services as $rmt_s ) : ?>
 						<li><a href="<?php echo esc_url( get_permalink( $rmt_s ) ); ?>"><?php echo esc_html( get_the_title( $rmt_s ) ); ?></a></li>
 					<?php endforeach; ?>
@@ -75,16 +70,7 @@ $rmt_privacy  = get_privacy_policy_url();
 					<?php echo esc_html( rmt_opt( 'region' ) ); ?><br>
 					<?php echo esc_html( rmt_opt( 'schedule' ) ); ?>
 				</p>
-				<?php if ( rmt_opt( 'telegram' ) || rmt_opt( 'whatsapp' ) ) : ?>
-					<p class="site-footer__social">
-						<?php if ( rmt_opt( 'telegram' ) ) : ?>
-							<a href="<?php echo esc_url( rmt_opt( 'telegram' ) ); ?>" rel="noopener" target="_blank">Telegram</a>
-						<?php endif; ?>
-						<?php if ( rmt_opt( 'whatsapp' ) ) : ?>
-							<a href="<?php echo esc_url( rmt_opt( 'whatsapp' ) ); ?>" rel="noopener" target="_blank">WhatsApp</a>
-						<?php endif; ?>
-					</p>
-				<?php endif; ?>
+				<?php echo rmt_messenger_links( 'messengers--footer' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<a class="btn" href="#lead-form"><?php esc_html_e( 'Оставить заявку', 'remont' ); ?></a>
 			</section>
 		</div>
@@ -100,6 +86,14 @@ $rmt_privacy  = get_privacy_policy_url();
 	</div>
 </footer>
 
+<?php if ( rmt_messengers() ) : ?>
+	<?php // Плавающие кнопки мессенджеров: появляются после первого экрана, чтобы не закрывать его. ?>
+	<nav class="float-chat" aria-label="<?php esc_attr_e( 'Написать в мессенджер', 'remont' ); ?>" data-float-chat>
+		<?php foreach ( rmt_messengers() as $rmt_key => $rmt_m ) : ?>
+			<a class="float-chat__btn messenger--<?php echo esc_attr( $rmt_key ); ?>" href="<?php echo esc_url( $rmt_m['url'] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: мессенджер */ __( 'Написать в %s', 'remont' ), $rmt_m['label'] ) ); ?>"><?php echo rmt_messenger_icon( $rmt_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
+		<?php endforeach; ?>
+	</nav>
+<?php endif; ?>
 <?php wp_footer(); ?>
 </body>
 </html>

@@ -30,7 +30,7 @@ function rmt_meta_description() {
 			$desc = has_excerpt( $post ) ? $post->post_excerpt : wp_trim_words( wp_strip_all_tags( strip_shortcodes( $post->post_content ) ), 30, '…' );
 		}
 	} elseif ( is_post_type_archive( 'service' ) ) {
-		$desc = __( 'Виды ремонта квартир: косметический, капитальный, дизайнерский, в новостройке и под ключ. Состав работ и порядок расчёта стоимости.', 'remont' );
+		$desc = __( 'Ремонт квартир и домов в Москве и Московской области: состав работ, тарифы и порядок расчёта стоимости.', 'remont' );
 	} elseif ( is_post_type_archive( 'project' ) ) {
 		$desc = __( 'Портфолио: реализованные ремонты и дизайн-проекты квартир и домов — фотографии, визуализации, площадь и состав работ.', 'remont' );
 	} elseif ( is_tax() ) {

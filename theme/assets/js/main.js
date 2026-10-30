@@ -17,6 +17,16 @@
 		window.addEventListener('scroll', onScroll, { passive: true });
 	}
 
+	/* ---------- Плавающие кнопки мессенджеров: после первого экрана ---------- */
+	var floatChat = document.querySelector('[data-float-chat]');
+	if (floatChat) {
+		var onChatScroll = function () {
+			floatChat.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.6);
+		};
+		onChatScroll();
+		window.addEventListener('scroll', onChatScroll, { passive: true });
+	}
+
 	/* ---------- Подменю: кнопки-стрелки ---------- */
 	document.addEventListener('click', function (e) {
 		var toggle = e.target.closest('.submenu-toggle');

@@ -10,12 +10,7 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 
 $rmt_current = is_tax( 'repair_type' ) ? get_queried_object() : null;
-$rmt_terms   = get_terms(
-	array(
-		'taxonomy'   => 'repair_type',
-		'hide_empty' => true,
-	)
-);
+$rmt_terms   = rmt_repair_types();
 
 get_template_part(
 	'template-parts/page-hero',

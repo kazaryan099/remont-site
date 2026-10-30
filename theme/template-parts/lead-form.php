@@ -113,6 +113,12 @@ $rmt_invalid = fn( $field ) => isset( $rmt_fields[ $field ] ) ? ' aria-invalid="
 
 			<button class="btn btn--block btn--lg" type="submit" data-submit><?php esc_html_e( 'Отправить заявку', 'remont' ); ?></button>
 			<p class="lead-form__note"><?php esc_html_e( 'Данные используются только для связи с вами по заявке и не передаются третьим лицам.', 'remont' ); ?></p>
+			<?php if ( rmt_messengers() ) : ?>
+				<div class="lead-form__messengers">
+					<p><?php esc_html_e( 'Удобнее написать? Ответим в мессенджере:', 'remont' ); ?></p>
+					<?php echo rmt_messenger_links(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</div>
+			<?php endif; ?>
 		</form>
 	</div>
 </section>

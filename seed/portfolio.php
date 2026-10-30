@@ -19,7 +19,7 @@ $rmt_projects = array(
 		'dir'     => 'povadino',
 		'order'   => 0,
 		'title'   => 'Частный дом в Повадино',
-		'type'    => 'dizajnerskij-remont',
+		'type'    => 'remont-domov',
 		'cover'   => 0,
 		'excerpt' => 'Интерьер загородного дома для семьи из четырёх человек: общая зона со вторым светом, приватный второй этаж, спа-зона с фитобочкой.',
 		'meta'    => array(
@@ -47,7 +47,7 @@ $rmt_projects = array(
 		'dir'     => 'glava',
 		'order'   => 1,
 		'title'   => 'ЖК «Эвер»',
-		'type'    => 'dizajnerskij-remont',
+		'type'    => 'remont-kvartir',
 		'cover'   => 4,
 		'excerpt' => 'Квартира в Москве для мамы с двумя дочками: нейтральная воздушная основа и мягкие акценты.',
 		'meta'    => array(
@@ -68,7 +68,7 @@ $rmt_projects = array(
 		'dir'     => 'veresk',
 		'order'   => 2,
 		'title'   => 'ЖК «Вереск»',
-		'type'    => 'remont-v-novostrojke',
+		'type'    => 'remont-kvartir',
 		'cover'   => 0,
 		'excerpt' => 'Квартира в современном жилом комплексе для пары с подростком: спокойная гамма и классические детали.',
 		'meta'    => array(
@@ -154,12 +154,6 @@ foreach ( $rmt_projects as $p ) {
 	if ( isset( $ids[ $p['cover'] ] ) ) {
 		set_post_thumbnail( $post_id, $ids[ $p['cover'] ] );
 	}
-}
-
-// Капитальный ремонт: вместо демо-фото черновых работ — кадр из Повадино.
-$rmt_capital = get_page_by_path( 'kapitalnyj-remont', OBJECT, 'service' );
-if ( $rmt_capital && ! empty( $rmt_first_images['povadino'][14] ) ) {
-	set_post_thumbnail( $rmt_capital, $rmt_first_images['povadino'][14] );
 }
 
 /* ---------- Уборка: демо-проекты и все демо-фото CC0 ---------- */
