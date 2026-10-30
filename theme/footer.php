@@ -71,7 +71,6 @@ $rmt_privacy  = get_privacy_policy_url();
 					<?php echo esc_html( rmt_opt( 'schedule' ) ); ?>
 				</p>
 				<?php echo rmt_messenger_links( 'messengers--footer' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<a class="btn" href="#lead-form"><?php esc_html_e( 'Оставить заявку', 'remont' ); ?></a>
 			</section>
 		</div>
 
@@ -87,12 +86,19 @@ $rmt_privacy  = get_privacy_policy_url();
 </footer>
 
 <?php if ( rmt_messengers() ) : ?>
-	<?php // Плавающие кнопки мессенджеров: появляются после первого экрана, чтобы не закрывать его. ?>
-	<nav class="float-chat" aria-label="<?php esc_attr_e( 'Написать в мессенджер', 'remont' ); ?>" data-float-chat>
+	<?php // Меню «Как связаться»: открывается по нажатию на номер телефона (скрипт); без скрипта номер просто звонит. ?>
+	<div class="contact-pop" role="dialog" aria-label="<?php esc_attr_e( 'Как связаться', 'remont' ); ?>" hidden data-contact-pop>
+		<a class="contact-pop__item" href="<?php echo esc_url( rmt_phone_href() ); ?>" data-direct-call>
+			<span class="contact-pop__icon contact-pop__icon--phone"><?php echo rmt_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+			<span><?php esc_html_e( 'Позвонить', 'remont' ); ?><small><?php echo esc_html( rmt_opt( 'phone' ) ); ?></small></span>
+		</a>
 		<?php foreach ( rmt_messengers() as $rmt_key => $rmt_m ) : ?>
-			<a class="float-chat__btn messenger--<?php echo esc_attr( $rmt_key ); ?>" href="<?php echo esc_url( $rmt_m['url'] ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: мессенджер */ __( 'Написать в %s', 'remont' ), $rmt_m['label'] ) ); ?>"><?php echo rmt_messenger_icon( $rmt_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a>
+			<a class="contact-pop__item" href="<?php echo esc_url( $rmt_m['url'] ); ?>" target="_blank" rel="noopener">
+				<span class="contact-pop__icon messenger--<?php echo esc_attr( $rmt_key ); ?>"><?php echo rmt_messenger_icon( $rmt_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+				<span><?php echo esc_html( $rmt_m['label'] ); ?><small><?php esc_html_e( 'Написать', 'remont' ); ?></small></span>
+			</a>
 		<?php endforeach; ?>
-	</nav>
+	</div>
 <?php endif; ?>
 <?php wp_footer(); ?>
 </body>

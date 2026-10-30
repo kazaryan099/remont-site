@@ -78,7 +78,7 @@ defined( 'ABSPATH' ) || exit;
 		<p><?php echo esc_html( rmt_opt( 'schedule' ) ); ?></p>
 	</div>
 	<div class="mobile-menu__bar">
-		<a class="btn" href="<?php echo esc_url( rmt_phone_href() ); ?>"><?php esc_html_e( 'Позвонить', 'remont' ); ?></a>
+		<a class="btn" href="<?php echo esc_url( rmt_phone_href() ); ?>" data-direct-call><?php esc_html_e( 'Позвонить', 'remont' ); ?></a>
 		<a class="btn btn--dark" href="#lead-form" data-menu-close><?php esc_html_e( 'Заявка', 'remont' ); ?></a>
 	</div>
 </div>

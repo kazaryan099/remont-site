@@ -17,14 +17,52 @@
 		window.addEventListener('scroll', onScroll, { passive: true });
 	}
 
-	/* ---------- Плавающие кнопки мессенджеров: после первого экрана ---------- */
-	var floatChat = document.querySelector('[data-float-chat]');
-	if (floatChat) {
-		var onChatScroll = function () {
-			floatChat.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.6);
+	/* ---------- Нажатие на номер телефона: меню «Позвонить / WhatsApp / Telegram / MAX» ---------- */
+	var pop = document.querySelector('[data-contact-pop]');
+	if (pop) {
+		var popOwner = null;
+		var phoneLinks = document.querySelectorAll('a[href^="tel:"]:not([data-direct-call])');
+		phoneLinks.forEach(function (a) { a.setAttribute('aria-haspopup', 'dialog'); a.setAttribute('aria-expanded', 'false'); });
+
+		var closePop = function (restoreFocus) {
+			if (pop.hidden) { return; }
+			pop.hidden = true;
+			if (popOwner) {
+				popOwner.setAttribute('aria-expanded', 'false');
+				if (restoreFocus) { popOwner.focus(); }
+			}
+			popOwner = null;
 		};
-		onChatScroll();
-		window.addEventListener('scroll', onChatScroll, { passive: true });
+		var openPop = function (link) {
+			popOwner = link;
+			link.setAttribute('aria-expanded', 'true');
+			pop.hidden = false;
+			// На компьютере — под номером; на телефоне стили прижимают меню к низу экрана.
+			var r = link.getBoundingClientRect();
+			var left = Math.min(Math.max(8, r.left + window.scrollX), window.scrollX + document.documentElement.clientWidth - pop.offsetWidth - 8);
+			pop.style.left = left + 'px';
+			pop.style.top = (r.bottom + window.scrollY + 8) + 'px';
+			pop.querySelector('a').focus({ preventScroll: true });
+		};
+
+		phoneLinks.forEach(function (a) {
+			a.addEventListener('click', function (e) {
+				e.preventDefault();
+				if (popOwner === a) { closePop(false); } else { closePop(false); openPop(a); }
+			});
+		});
+		pop.addEventListener('click', function (e) {
+			if (e.target.closest('a')) { closePop(false); }
+		});
+		document.addEventListener('click', function (e) {
+			if (!pop.hidden && !pop.contains(e.target) && !e.target.closest('a[href^="tel:"]')) { closePop(false); }
+		});
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape') { closePop(true); }
+		});
+		window.addEventListener('resize', function () { closePop(false); });
+		// Шапка закреплена — при прокрутке меню под номером «уехало» бы, поэтому закрываем.
+		window.addEventListener('scroll', function () { if (window.matchMedia('(min-width: 600px)').matches) { closePop(false); } }, { passive: true });
 	}
 
 	/* ---------- Подменю: кнопки-стрелки ---------- */
