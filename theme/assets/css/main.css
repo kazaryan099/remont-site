@@ -569,6 +569,8 @@ h3.display { font-size: var(--fs-h3); }
 	color: var(--c-on-dark);
 }
 .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 36px; margin-top: 36px; }
+/* Кнопка «Рассчитать стоимость» — того же кегля, что ссылка «Оставить заявку» рядом, и заметно крупнее неё. */
+.hero__actions .btn { min-height: 60px; padding: 20px 40px; font-size: clamp(.875rem, .8rem + .4vw, 1.0625rem); }
 
 /* Полоса фактов */
 .facts { background: var(--c-ink); color: var(--c-white); }
