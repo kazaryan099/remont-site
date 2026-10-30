@@ -949,7 +949,7 @@ h3.display { font-size: var(--fs-h3); }
 	position: absolute; left: 1px; top: 1px; bottom: 1px; z-index: 1;
 	display: flex; align-items: center; padding: 0 10px 0 14px;
 	border-right: 1px solid var(--c-line); border-radius: var(--radius) 0 0 var(--radius);
-	font-family: var(--f-ui); font-size: 1rem; font-weight: 600; color: var(--c-ink);
+	font-family: var(--f-ui); font-size: 1rem; font-weight: 400; color: var(--c-ink); /* как у вводимых цифр */
 	pointer-events: none;
 }
 .phone-input .input { padding-left: 58px; }
