@@ -371,6 +371,7 @@ h3.display { font-size: var(--fs-h3); }
 .main-nav .menu > li.current-menu-ancestor > a::after,
 .main-nav .menu > li > a[aria-current="page"]::after { transform: scaleX(1); }
 .main-nav .menu > li.menu-item-has-children > a { padding-right: 2px; }
+.main-nav .menu > li.menu-item-has-children > a::after { right: 2px; } /* у пункта со стрелкой отступ справа меньше — полоса должна доходить до конца текста */
 
 .submenu-toggle {
 	display: inline-grid; place-items: center;
@@ -417,6 +418,9 @@ h3.display { font-size: var(--fs-h3); }
 
 @media (max-width: 1279px) {
 	.main-nav .menu > li > a { padding-inline: 8px; letter-spacing: .03em; }
+	.main-nav .menu > li > a::after { left: 8px; right: 8px; }
+	.main-nav .menu > li.menu-item-has-children > a { padding-right: 2px; }
+	.main-nav .menu > li.menu-item-has-children > a::after { right: 2px; }
 	.header-phone span { display: none; }
 	.header-phone { width: 40px; height: 40px; justify-content: center; border: 1px solid var(--c-line); border-radius: 50%; }
 }
