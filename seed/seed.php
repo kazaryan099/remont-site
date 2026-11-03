@@ -38,7 +38,7 @@ foreach ( $alts as $name => $alt ) {
 		$img[ $name ] = $existing[0];
 		continue;
 	}
-	$src = '/seed/images/' . $name . '.jpg';
+	$src = __DIR__ . '/images/' . $name . '.jpg';
 	if ( ! file_exists( $src ) ) {
 		$log( "Нет файла {$src}, пропускаю" );
 		continue;

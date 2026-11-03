@@ -112,7 +112,7 @@ foreach ( $rmt_projects as $p ) {
 	$ids = array();
 	foreach ( $p['alts'] as $i => $alt ) {
 		$name  = sprintf( '%s-%02d', $p['dir'], $i );
-		$ids[] = $rmt_import( '/seed/images/' . $p['dir'] . '/' . $name . '.jpg', $name, $alt );
+		$ids[] = $rmt_import( __DIR__ . '/images/' . $p['dir'] . '/' . $name . '.jpg', $name, $alt );
 	}
 	$ids = array_values( array_filter( $ids ) );
 	WP_CLI::log( "Фото {$p['title']}: " . count( $ids ) );

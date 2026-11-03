@@ -54,7 +54,7 @@ $rmt_sin_import = function ( $name, $alt ) {
 	if ( $found ) {
 		return $found[0];
 	}
-	$src = '/seed/images/sinergiya/' . $name . '.jpg';
+	$src = __DIR__ . '/images/sinergiya/' . $name . '.jpg';
 	if ( ! file_exists( $src ) ) {
 		WP_CLI::warning( "Нет файла {$src}" );
 		return 0;
